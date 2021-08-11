@@ -20,22 +20,46 @@ package ca.uqac.lif.numbers;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A real number represented as a division between two products of
+ * numbers elevated at some real power.
+ * @author Sylvain Hallé
+ */
 public class Rational implements Real
 {
 	/*@ non_null @*/ protected final Map<Number,Real> m_numerator;
 
 	/*@ non_null @*/ protected final Map<Number,Real> m_denominator;
 
+	/**
+	 * Gets a rational number instance out of integer numerator and
+	 * denominator. 
+	 * @param numerator The numerator
+	 * @param denominator The denominator
+	 * @return The rational instance
+	 */
 	public static Rational get(int numerator, int denominator)
 	{
 		return new Rational(numerator, denominator);
 	}
 
+	/**
+	 * Gets a rational number instance out of a {@link double} precision
+	 * floating point number. The fraction is obtained by directly turning the
+	 * number into a decimal fraction; for example, 0.05 will become 5/100, and
+	 * 0.142857 will become 142857/1000000.
+	 * @param x The number
+	 * @return The rational instance
+	 */
 	public static Rational get(double x)
 	{
 		return new Rational(x);
 	}
 
+	/**
+	 * Creates an empty rational number, with nothing specified for the
+	 * numerator and the denominator.
+	 */
 	protected Rational()
 	{
 		super();
@@ -43,6 +67,13 @@ public class Rational implements Real
 		m_denominator = new HashMap<Number,Real>();
 	}
 
+	/**
+	 * Gets a rational number instance out of integer numerator and
+	 * denominator. 
+	 * @param numerator The numerator
+	 * @param denominator The denominator
+	 * @return The rational instance
+	 */
 	protected Rational(int numerator, int denominator)
 	{
 		this();
@@ -50,6 +81,14 @@ public class Rational implements Real
 		m_denominator.put(denominator, Whole.get(1));
 	}
 
+	/**
+	 * Gets a rational number instance out of a {@link double} precision
+	 * floating point number. The fraction is obtained by directly turning the
+	 * number into a decimal fraction; for example, 0.05 will become 5/100, and
+	 * 0.142857 will become 142857/1000000.
+	 * @param x The number
+	 * @return The rational instance
+	 */
 	protected Rational(double x)
 	{
 		this();
@@ -64,6 +103,12 @@ public class Rational implements Real
 		m_denominator.put(10, Whole.get(power_10));
 	}
 	
+	/**
+	 * Creates a rational number out of a factored representation of its
+	 * numerator and denominator.
+	 * @param numerator The numerator
+	 * @param denominator The denominator
+	 */
 	protected Rational(/*@ non_null @*/ Map<Number,Real> numerator, /*@ non_null @*/ Map<Number,Real> denominator)
 	{
 		super();
