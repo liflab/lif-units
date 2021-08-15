@@ -1,5 +1,6 @@
 package ca.uqac.lif.units.examples.factory;
 
+import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
 
@@ -13,6 +14,11 @@ public class Lightbulb extends DimensionValue
 	}
 	
 	public Lightbulb(double x)
+	{
+		super(x);
+	}
+	
+	public Lightbulb(Real x)
 	{
 		super(x);
 	}
@@ -36,7 +42,7 @@ public class Lightbulb extends DimensionValue
 	}
 
 	@Override
-	protected double fromBaseUnit(double x)
+	protected Real fromBaseUnit(Real x)
 	{
 		return x;
 	}

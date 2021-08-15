@@ -1,11 +1,13 @@
 package ca.uqac.lif.units.examples.factory;
 
+import ca.uqac.lif.numbers.Rational;
+import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
 
 public class Euro extends DimensionValue 
 {
-	protected static final double s_exchangeRate = 1.2;
+	protected static final Rational s_exchangeRate = Rational.get(1.2);
 	
 	public Euro(DimensionValue x)
 	{
@@ -17,10 +19,15 @@ public class Euro extends DimensionValue
 		super(x);
 	}
 	
-	@Override
-	protected double fromBaseUnit(double x)
+	public Euro(Real x)
 	{
-		return x / s_exchangeRate;
+		super(x);
+	}
+	
+	@Override
+	protected Real fromBaseUnit(Real x)
+	{
+		return x.divide(s_exchangeRate);
 	}
 	
 	@Override
@@ -38,6 +45,6 @@ public class Euro extends DimensionValue
 	@Override
 	public USDollar asBaseUnit() 
 	{
-		return new USDollar(m_value * s_exchangeRate);
+		return new USDollar(m_value.multiply(s_exchangeRate));
 	}
 }

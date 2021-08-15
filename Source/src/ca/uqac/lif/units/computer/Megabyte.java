@@ -1,5 +1,7 @@
 package ca.uqac.lif.units.computer;
 
+import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.units.DimensionValue;
 
 /**
@@ -9,20 +11,22 @@ import ca.uqac.lif.units.DimensionValue;
  */
 public class Megabyte extends Byte
 {
+	protected static final Whole s_factor = Whole.get(1000000);
+	
 	public Megabyte(DimensionValue x)
 	{
 		super(x);
 	}
 	
-	public Megabyte(double x)
+	public Megabyte(Real x)
 	{
 		super(x);
 	}
 	
 	@Override
-	protected double fromBaseUnit(double x)
+	protected Real fromBaseUnit(Real x)
 	{
-		return x / 1000000;
+		return x.divide(s_factor);
 	}
 	
 	@Override
@@ -34,6 +38,6 @@ public class Megabyte extends Byte
 	@Override
 	public Memory asBaseUnit()
 	{
-		return new Byte(m_value * 1000000);
+		return new Byte(m_value.multiply(s_factor));
 	}
 }

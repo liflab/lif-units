@@ -1,5 +1,7 @@
 package ca.uqac.lif.units.computer;
 
+import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.units.DimensionValue;
 
 /**
@@ -8,6 +10,8 @@ import ca.uqac.lif.units.DimensionValue;
  */
 public class Bit extends Memory
 {
+	protected static final Whole s_factor = Whole.get(8);
+	
 	public Bit(DimensionValue x)
 	{
 		super(x);
@@ -19,9 +23,9 @@ public class Bit extends Memory
 	}
 	
 	@Override
-	protected double fromBaseUnit(double x)
+	protected Real fromBaseUnit(Real x)
 	{
-		return x * 8;
+		return x.multiply(s_factor);
 	}
 	
 	@Override
@@ -33,6 +37,6 @@ public class Bit extends Memory
 	@Override
 	public Memory asBaseUnit()
 	{
-		return new Byte(m_value / 8);
+		return new Byte(m_value.divide(s_factor));
 	}
 }

@@ -17,7 +17,7 @@ public class LengthTest
 	{
 		Meter m = new Meter(0.254);
 		Inch i = new Inch(m);
-		assertEquals(10, i.get(), 0.0001);
+		assertEquals(10, i.get().doubleValue(), 0.0001);
 	}
 	
 	@Test
@@ -25,7 +25,7 @@ public class LengthTest
 	{
 		Inch i = new Inch(1);
 		Centimeter c = new Centimeter(i);
-		assertEquals(2.54, c.get(), 0.0001);
+		assertEquals(2.54, c.get().doubleValue(), 0.0001);
 	}
 	
 	@Test(expected=IncompatibleDimensions.class)
@@ -40,6 +40,6 @@ public class LengthTest
 	{
 		Meter m = new Meter(0.254);
 		Centimeter c = new Centimeter(m);
-		assertEquals(25.4, c.get(), 0.0001);
+		assertEquals(25.4, c.get().doubleValue(), 0.0001);
 	}
 }

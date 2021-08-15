@@ -3,6 +3,9 @@ package ca.uqac.lif.units;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import ca.uqac.lif.numbers.FloatingPoint;
+import ca.uqac.lif.numbers.Real;
+
 /**
  * A scalar number accompanied by a dimension.
  * @author Sylvain Hallé
@@ -13,7 +16,7 @@ public abstract class DimensionValue
 	/**
 	 * The value in "native" units.
 	 */
-	protected final double m_value;
+	/*@ non_null @*/ protected final Real m_value;
 	
 	/**
 	 * Creates a new dimension value from a scalar number.
@@ -22,7 +25,17 @@ public abstract class DimensionValue
 	public DimensionValue(double d)
 	{
 		super();
-		m_value = d;
+		m_value = new FloatingPoint(d);
+	}
+	
+	/**
+	 * Creates a new dimension value from a real scalar number.
+	 * @param x The real value in the native units of the class
+	 */
+	public DimensionValue(/*@ non_null @*/ Real x)
+	{
+		super();
+		m_value = x;
 	}
 	
 	/**
@@ -48,7 +61,7 @@ public abstract class DimensionValue
 	 * Gets the scalar of this dimension value, expressed in its native units.
 	 * @return The scalar
 	 */
-	public final double get()
+	public final Real get()
 	{
 		return m_value;
 	}
@@ -94,11 +107,11 @@ public abstract class DimensionValue
 		}
 	}
 	
-	/*@ non_null @*/ public static DimensionValue instantiate(double x, /*@ non_null @*/ Class<? extends DimensionValue> unit) throws NoSuchUnitException
+	/*@ non_null @*/ public static DimensionValue instantiate(Real x, /*@ non_null @*/ Class<? extends DimensionValue> unit) throws NoSuchUnitException
 	{
 		try
 		{
-			Constructor<? extends DimensionValue> constructor = unit.getConstructor(Double.TYPE);
+			Constructor<? extends DimensionValue> constructor = unit.getConstructor(Real.class);
 			DimensionValue v = constructor.newInstance(x);
 			return v;
 		} 
@@ -133,7 +146,8 @@ public abstract class DimensionValue
 	 * @param x The scalar in base units
 	 * @return The scalar in native units
 	 */
-	protected abstract double fromBaseUnit(double x);	
+	protected abstract Real fromBaseUnit(Real x);
+	
 	/**
 	 * Gets the dimension of this value.
 	 * @return The dimension

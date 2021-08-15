@@ -14,6 +14,6 @@ public class UnitDivideTest
 	{
 		DimensionValue v = UnitDivide.get(new Meter(4), new Meter(2));
 		DimensionValue m = v.asBaseUnit();
-		assertEquals(2, m.get(), 0.0001);
+		assertEquals(2, m.get().doubleValue(), 0.0001);
 	}
 }

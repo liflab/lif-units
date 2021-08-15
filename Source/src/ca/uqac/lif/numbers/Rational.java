@@ -21,16 +21,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A real number represented as a division between two products of
- * numbers elevated at some real power.
+ * A real number represented as a product of integer numbers elevated at some
+ * integer power.
  * @author Sylvain Hallé
  */
 public class Rational implements Real
 {
-	/*@ non_null @*/ protected final Map<Number,Real> m_numerator;
+	/**
+	 * The factors composing this rational number.
+	 */
+	/*@ non_null @*/ protected final Map<Integer,Integer> m_factors;
+	
+	/**
+	 * The uncertainty associated to this number. Can be zero or any positive
+	 * number.
+	 */
+	protected final double m_uncertainty;
+	
+	/**
+	 * A flag indicating if the rational is positive or negative.
+	 */
+	protected boolean m_positive;
 
-	/*@ non_null @*/ protected final Map<Number,Real> m_denominator;
-
+	/**
+	 * Gets a rational number instance out of integer numerator and
+	 * denominator and specifies its uncertainty. 
+	 * @param numerator The numerator
+	 * @param denominator The denominator
+	 * @param uncertainty The uncertainty associated to this number
+	 * @return The rational instance
+	 */
+	public static Rational get(int numerator, int denominator, double uncertainty)
+	{
+		return new Rational(numerator, denominator, uncertainty);
+	}
+	
 	/**
 	 * Gets a rational number instance out of integer numerator and
 	 * denominator. 
@@ -41,6 +66,20 @@ public class Rational implements Real
 	public static Rational get(int numerator, int denominator)
 	{
 		return new Rational(numerator, denominator);
+	}
+	
+	/**
+	 * Gets a rational number instance out of a {@link double} precision
+	 * floating point number. The fraction is obtained by directly turning the
+	 * number into a decimal fraction; for example, 0.05 will become 5/100, and
+	 * 0.142857 will become 142857/1000000.
+	 * @param x The number
+	 * @param uncertainty The uncertainty associated to this number
+	 * @return The rational instance
+	 */
+	public static Rational get(double x, double uncertainty)
+	{
+		return new Rational(x, uncertainty);
 	}
 
 	/**
@@ -57,16 +96,35 @@ public class Rational implements Real
 	}
 
 	/**
-	 * Creates an empty rational number, with nothing specified for the
-	 * numerator and the denominator.
+	 * Creates an empty rational number, with nothing specified for its
+	 * factors.
 	 */
 	protected Rational()
 	{
 		super();
-		m_numerator = new HashMap<Number,Real>();
-		m_denominator = new HashMap<Number,Real>();
+		m_factors = new HashMap<Integer,Integer>();
+		m_positive = true;
+		m_uncertainty = 0;
 	}
 
+	/**
+	 * Gets a rational number instance out of integer numerator and
+	 * denominator, and specifies its uncertainty.
+	 * @param numerator The numerator
+	 * @param denominator The denominator
+	 * @param uncertainty The uncertainty associated to the number
+	 * @return The rational instance
+	 */
+	protected Rational(int numerator, int denominator, double uncertainty)
+	{
+		super();
+		m_factors = new HashMap<Integer,Integer>();
+		addFactor(numerator, 1);
+		addFactor(denominator, -1);
+		m_positive = (numerator * denominator >= 0);
+		m_uncertainty = Math.abs(NumberFormatter.roundToSignificantFigures(uncertainty, 1));
+	}
+	
 	/**
 	 * Gets a rational number instance out of integer numerator and
 	 * denominator. 
@@ -76,9 +134,35 @@ public class Rational implements Real
 	 */
 	protected Rational(int numerator, int denominator)
 	{
-		this();
-		m_numerator.put(numerator, Whole.get(1));
-		m_denominator.put(denominator, Whole.get(1));
+		this(numerator, denominator, 0);
+	}
+	
+	/**
+	 * Gets a rational number instance out of a {@link double} precision
+	 * floating point number, and specifies its uncertainty. The fraction is 
+	 * obtained by directly turning the number into a decimal fraction; for
+	 * example, 0.05 will become 5/100, and 0.142857 will become
+	 * 142857/1000000.
+	 * @param x The number
+	 * @param uncertainty The uncertainty associated to the number
+	 * @return The rational instance
+	 */
+	protected Rational(double x, double uncertainty)
+	{
+		super();
+		m_factors = new HashMap<Integer,Integer>();
+		double v = x;
+		int power_10 = 0;
+		while (v != (int) v)
+		{
+			v *= 10;
+			power_10++;
+		}
+		addFactor((int) v, 1);
+		addPrimeFactor(2, -power_10);
+		addPrimeFactor(5, -power_10);
+		m_positive = (x >= 0);
+		m_uncertainty = Math.abs(NumberFormatter.roundToSignificantFigures(uncertainty, 1));
 	}
 
 	/**
@@ -99,21 +183,62 @@ public class Rational implements Real
 			v *= 10;
 			power_10++;
 		}
-		m_numerator.put(v, Whole.get(1));
-		m_denominator.put(10, Whole.get(power_10));
+		addFactor((int) v, 1);
+		addPrimeFactor(2, -power_10);
+		addPrimeFactor(5, -power_10);
+		m_positive = (x >= 0);
 	}
 	
 	/**
-	 * Creates a rational number out of a factored representation of its
-	 * numerator and denominator.
-	 * @param numerator The numerator
-	 * @param denominator The denominator
+	 * Creates a rational number out of a factored representation of another
+	 * rational.
+	 * @param factors The factors
+	 * @param positive Whether this number is positive or not
+	 * @param uncertainty The uncertainty associated to the number
 	 */
-	protected Rational(/*@ non_null @*/ Map<Number,Real> numerator, /*@ non_null @*/ Map<Number,Real> denominator)
+	protected Rational(/*@ non_null @*/ Map<Integer,Integer> factors, boolean positive, double uncertainty)
 	{
 		super();
-		m_numerator = numerator;
-		m_denominator = denominator;
+		m_factors = factors;
+		m_positive = positive;
+		m_uncertainty = Math.abs(uncertainty);
+	}
+	
+	public Rational addFactor(int number, int power)
+	{
+		Map<Integer,Integer> factors = new HashMap<Integer,Integer>();
+		primeFactors(number, 1, factors);
+		for (Map.Entry<Integer,Integer> e : factors.entrySet())
+		{
+			int new_pow = e.getValue() * power;
+			addPrimeFactor(e.getKey(), new_pow);
+		}
+		return this;
+	}
+	
+	protected Rational addPrimeFactor(int number, int power)
+	{
+		if (!m_factors.containsKey(number))
+		{
+			if (power != 0)
+			{
+				m_factors.put(number, power);
+			}
+		}
+		else
+		{
+			int pow = m_factors.get(number);
+			int new_pow = pow + power;
+			if (new_pow != 0)
+			{
+				m_factors.put(number, new_pow);
+			}
+			else
+			{
+				m_factors.remove(number);
+			}
+		}
+		return this;
 	}
 
 	/**
@@ -123,118 +248,140 @@ public class Rational implements Real
 	 */
 	public double doubleValue()
 	{
-		return getNumerator() / getDenominator();
-	}
-
-	protected double getNumerator()
-	{
 		double x = 1;
-		for (Map.Entry<Number,Real> e : m_numerator.entrySet())
+		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
 		{
-			x *= Math.pow(e.getKey().doubleValue(), e.getValue().doubleValue());
+			x *= Math.pow(e.getKey(), e.getValue().doubleValue());
 		}
 		return x;
-	}
-
-	protected double getDenominator()
-	{
-		double x = 1;
-		for (Map.Entry<Number,Real> e : m_denominator.entrySet())
-		{
-			x *= Math.pow(e.getKey().doubleValue(), e.getValue().doubleValue());
-		}
-		return x;
-	}
-
-	/**
-	 * Simplifies a fraction.
-	 * @return A new fraction corresponding to the simplification of the
-	 * current fraction
-	 */
-	public Rational simplify()
-	{
-		if (!isSimplifiable())
-		{
-			// Cannot simplify
-			return this;
-		}
-		Map<Number,Real> numerator = new HashMap<Number,Real>();
-		for (Map.Entry<Number,Real> e : m_numerator.entrySet())
-		{
-			primeFactors(e.getKey().intValue(), e.getValue().intValue(), numerator);
-		}
-		Map<Number,Real> denominator = new HashMap<Number,Real>();
-		for (Map.Entry<Number,Real> e : m_denominator.entrySet())
-		{
-			primeFactors(e.getKey().intValue(), e.getValue().intValue(), denominator);
-		}
-		Map<Number,Real> new_num = new HashMap<Number,Real>();
-		Map<Number,Real> new_den= new HashMap<Number,Real>();
-		for (Map.Entry<Number,Real> e : numerator.entrySet())
-		{
-			if (denominator.containsKey(e.getKey()))
-			{
-				Real exp_num = e.getValue();
-				Real exp_den = denominator.get(e.getKey());
-				Real exp_new = exp_num.subtract(exp_den);
-				if (exp_new.doubleValue() > 0)
-				{
-					new_num.put(e.getKey(), exp_num);
-				}
-				else if (exp_new.doubleValue() < 0)
-				{
-					new_den.put(e.getKey(), exp_num);
-				}
-			}
-			else
-			{
-				new_num.put(e.getKey(), e.getValue());
-			}
-		}
-		for (Map.Entry<Number,Real> e : denominator.entrySet())
-		{
-			if (!numerator.containsKey(e.getKey()))
-			{
-				new_den.put(e.getKey(), e.getValue());
-			}
-		}
-		return new Rational(new_num, new_den);
 	}
 	
 	/**
-	 * Determines if this fraction is simplifiable. For a fraction to be
-	 * simplifiable, its numerator and denominator must only contain integers
-	 * raised to an integer power.
-	 * @return {@code true} if the fraction is simplifiable, {@code false}
-	 * otherwise
+	 * Gets the factoring that corresponds to the numerator of the rational
+	 * number.
+	 * @return The factoring of the numerator
 	 */
-	public boolean isSimplifiable()
+	protected Map<Integer,Integer> getNumerator()
 	{
-		for (Map.Entry<Number,Real> e : m_numerator.entrySet())
+		Map<Integer,Integer> map = new HashMap<Integer,Integer>();
+		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
 		{
-			if (e.getKey().intValue() != e.getKey().doubleValue() || e.getValue().doubleValue() != (int) e.getValue().doubleValue())
+			double power = e.getValue().doubleValue();
+			if (power > 0)
 			{
-				return false;
+				map.put(e.getKey(), e.getValue());
 			}
 		}
-		for (Map.Entry<Number,Real> e : m_denominator.entrySet())
+		return map;
+	}
+
+	/**
+	 * Gets the value of the product of all factors with a positive power.
+	 * This corresponds to the numerator when the rational is represented
+	 * as a fraction.
+	 * @return The value of the numerator
+	 */
+	protected int getNumeratorValue()
+	{
+		int x = 1;
+		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
 		{
-			if (e.getKey().intValue() != e.getKey().doubleValue() || e.getValue().doubleValue() != (int) e.getValue().doubleValue())
+			double power = e.getValue().doubleValue();
+			if (power > 0)
 			{
-				return false;
+				x *= Math.pow(e.getKey().doubleValue(), power);
 			}
 		}
-		return true;
+		return x;
+	}
+	
+	/**
+	 * Gets the factoring that corresponds to the denominator of the rational
+	 * number.
+	 * @return The factoring of the denominator
+	 */
+	protected Map<Integer,Integer> getDenominator()
+	{
+		Map<Integer,Integer> map = new HashMap<Integer,Integer>();
+		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
+		{
+			double power = e.getValue().doubleValue();
+			if (power < 0)
+			{
+				map.put(e.getKey(), e.getValue());
+			}
+		}
+		return map;
+	}
+
+	/**
+	 * Gets the value of the product of all factors with a negative power.
+	 * This corresponds to the denominator when the rational is represented
+	 * as a fraction. For example, with the rational
+	 * 2<sup>3</sup>&times;3<sup>-1</sup>&times;5<sup>-2</sup>, the denominator
+	 * is 3<sup>1</sup>&times;5<sup>2</sup> = 75.
+	 * @return The value of the denominator
+	 */
+	protected int getDenominatorValue()
+	{
+		int x = 1;
+		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
+		{
+			double power = e.getValue().doubleValue();
+			if (power < 0)
+			{
+				x *= Math.pow(e.getKey().doubleValue(), -power);
+			}
+		}
+		return x;
 	}
 
 	@Override
 	public String toString()
 	{
 		StringBuilder out = new StringBuilder();
-		out.append(NumberFormatter.display(getNumerator()));
+		if (m_uncertainty > 0)
+		{
+			out.append("(");
+		}
+		if (!m_positive)
+		{
+			out.append("-");
+		}
+		out.append(NumberFormatter.display(getNumeratorValue()));
 		out.append("/");
-		out.append(NumberFormatter.display(getDenominator()));
+		out.append(NumberFormatter.display(getDenominatorValue()));
+		if (m_uncertainty > 0)
+		{
+			out.append(")");
+		}
 		return out.toString();
+	}
+	
+	@Override
+	public Real pow(Real x)
+	{
+		double d_x = x.doubleValue();
+		int pow = (int) d_x;
+		if (d_x == pow)
+		{
+			// Integer power
+			Rational new_r = new Rational();
+			for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
+			{
+				new_r.addPrimeFactor(e.getKey(), e.getValue() * pow);
+				if (pow % 2 == 1 && !m_positive)
+				{
+					new_r.m_positive = false;
+				}
+				else
+				{
+					new_r.m_positive = true;
+				}
+			}
+			return new_r;
+		}
+		return new FloatingPoint(Math.pow(doubleValue(), d_x));
 	}
 	
 	protected static Rational asRational(Real x)
@@ -250,37 +397,85 @@ public class Rational implements Real
 		}
 		if (r_x == null)
 		{
-			throw new UnsupportedOperationException("Cannot add to this number");
+			throw new UnsupportedOperationException("Cannot turn this number into a rational");
 		}
 		return r_x;
+	}
+	
+	@Override
+	public Rational opposite()
+	{
+		return new Rational(m_factors, !m_positive, m_uncertainty);
 	}
 
 	@Override
 	public Real add(Real x) 
 	{
+		if (x instanceof FloatingPoint)
+		{
+			return x.add(this);
+		}
 		Rational r_x = asRational(x);
-		
+		int a = getNumeratorValue();
+		int b = getDenominatorValue();
+		int c = r_x.getNumeratorValue();
+		int d = r_x.getDenominatorValue();
+		return Rational.get(a * d + b * c, b * d);
 	}
 
 	@Override
 	public Real subtract(Real x) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if (x instanceof FloatingPoint)
+		{
+			return x.add(this);
+		}
+		Rational r_x = asRational(x);
+		int a = getNumeratorValue();
+		int b = getDenominatorValue();
+		int c = r_x.getNumeratorValue();
+		int d = r_x.getDenominatorValue();
+		return Rational.get(a * d - b * c, b * d);
 	}
 
 	@Override
 	public Real divide(Real x) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if (x instanceof FloatingPoint)
+		{
+			return x.multiply(this);
+		}
+		Rational r_x = asRational(x);
+		Rational new_r = new Rational();
+		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
+		{
+			new_r.addPrimeFactor(e.getKey(), e.getValue());
+		}
+		for (Map.Entry<Integer,Integer> e : r_x.m_factors.entrySet())
+		{
+			new_r.addPrimeFactor(e.getKey(), -e.getValue());
+		}
+		return new_r;
 	}
 
 	@Override
 	public Real multiply(Real x) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if (x instanceof FloatingPoint)
+		{
+			return x.multiply(this);
+		}
+		Rational r_x = asRational(x);
+		Rational new_r = new Rational();
+		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
+		{
+			new_r.addPrimeFactor(e.getKey(), e.getValue());
+		}
+		for (Map.Entry<Integer,Integer> e : r_x.m_factors.entrySet())
+		{
+			new_r.addPrimeFactor(e.getKey(), e.getValue());
+		}
+		return new_r;
 	}
 
 	@Override
@@ -302,7 +497,7 @@ public class Rational implements Real
 	 * @param factoring A mapping between primes and their power in the prime
 	 * factoring of the number. The method writes into this map.
 	 */
-	public static void primeFactors(int number, int power, /*@ non_null @*/ Map<Number,Real> factoring) 
+	public static void primeFactors(int number, int power, /*@ non_null @*/ Map<Integer,Integer> factoring) 
 	{
 		int n = number;
 		for (int i = 2; i <= n/i; i++) 
@@ -311,11 +506,11 @@ public class Rational implements Real
 			{
 				if (factoring.containsKey(i))
 				{
-					factoring.put(i, factoring.get(i).add(Whole.get(power))); 					
+					factoring.put(i, factoring.get(i) + power);
 				}
 				else
 				{
-					factoring.put(i, Whole.get(power));
+					factoring.put(i, power);
 				}
 				n /= i;
 			} 
@@ -324,12 +519,24 @@ public class Rational implements Real
 		{
 			if (factoring.containsKey(n))
 			{
-				factoring.put(n, factoring.get(n).add(Whole.get(power))); 					
+				factoring.put(n, factoring.get(n) + power); 					
 			}
 			else
 			{
-				factoring.put(n, Whole.get(power));
+				factoring.put(n, power);
 			}
 		}
+	}
+
+	@Override
+	public double getUncertainty()
+	{
+		return m_uncertainty;
+	}
+
+	@Override
+	public Real inverse() 
+	{
+		return Rational.get(1, 1).divide(this); 
 	}
 }

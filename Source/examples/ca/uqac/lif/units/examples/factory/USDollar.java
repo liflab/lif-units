@@ -1,5 +1,6 @@
 package ca.uqac.lif.units.examples.factory;
 
+import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
 
@@ -13,6 +14,11 @@ public class USDollar extends DimensionValue
 	}
 	
 	public USDollar(double x)
+	{
+		super(x);
+	}
+	
+	public USDollar(Real x)
 	{
 		super(x);
 	}
@@ -36,7 +42,7 @@ public class USDollar extends DimensionValue
 	}
 
 	@Override
-	protected double fromBaseUnit(double x)
+	protected Real fromBaseUnit(Real x)
 	{
 		return m_value;
 	}

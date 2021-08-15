@@ -1,5 +1,7 @@
 package ca.uqac.lif.units.examples.factory;
 
+import ca.uqac.lif.numbers.Rational;
+import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
 import ca.uqac.lif.units.NamelessDimensionValue;
@@ -7,6 +9,8 @@ import ca.uqac.lif.units.Quantity;
 
 public class BoxesPerHour extends DimensionValue
 {
+	protected static final Rational s_factor = Rational.get(12 * 3600);
+	
 	public BoxesPerHour(DimensionValue x)
 	{
 		super(x);
@@ -18,9 +22,9 @@ public class BoxesPerHour extends DimensionValue
 	}
 	
 	@Override
-	protected double fromBaseUnit(double x)
+	protected Real fromBaseUnit(Real x)
 	{
-		return m_value / 12 * 3600;
+		return m_value.divide(s_factor);
 	}
 	
 	@Override
@@ -38,7 +42,7 @@ public class BoxesPerHour extends DimensionValue
 	@Override
 	public DimensionValue asBaseUnit()
 	{
-		return new NamelessDimensionValue(m_value * 12 / 3600, getDimension());
+		return new NamelessDimensionValue(m_value.multiply(s_factor), getDimension());
 	}
 	
 	

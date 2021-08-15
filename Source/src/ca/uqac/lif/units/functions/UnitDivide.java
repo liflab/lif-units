@@ -1,5 +1,6 @@
 package ca.uqac.lif.units.functions;
 
+import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.petitpoucet.function.InvalidArgumentTypeException;
 import ca.uqac.lif.petitpoucet.function.number.Multiplication;
 import ca.uqac.lif.units.Dimension;
@@ -30,7 +31,7 @@ public class UnitDivide extends Multiplication
 		}
 		DimensionValue v1 = (DimensionValue) o1;
 		target_dim.add(v1.getDimension());
-		double si_prod = v1.asBaseUnit().get();
+		Real si_prod = v1.asBaseUnit().get();
 		Object o2 = inputs[1];
 		if (!(o2 instanceof DimensionValue))
 		{
@@ -38,8 +39,8 @@ public class UnitDivide extends Multiplication
 		}
 		DimensionValue v2 = (DimensionValue) o2;
 		target_dim.subtract(v2.getDimension());
-		double val2 = v2.asBaseUnit().get();
-		out[0] = new NamelessDimensionValue(si_prod / val2, target_dim);
+		Real val2 = v2.asBaseUnit().get();
+		out[0] = new NamelessDimensionValue(si_prod.divide(val2), target_dim);
 		return out;
 	}
 

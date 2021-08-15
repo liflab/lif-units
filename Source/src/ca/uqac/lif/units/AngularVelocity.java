@@ -1,5 +1,7 @@
 package ca.uqac.lif.units;
 
+import ca.uqac.lif.numbers.Real;
+
 /**
  * A value expressing rotation speed.
  * @author Sylvain Hallé
@@ -12,6 +14,11 @@ public abstract class AngularVelocity extends DimensionValue
 	public static final Dimension DIMENSION = new Dimension().add(Quantity.ANGLE, 1).add(Quantity.TIME, -1);
 
 	public AngularVelocity(DimensionValue x) 
+	{
+		super(x);
+	}
+	
+	public AngularVelocity(Real x) 
 	{
 		super(x);
 	}

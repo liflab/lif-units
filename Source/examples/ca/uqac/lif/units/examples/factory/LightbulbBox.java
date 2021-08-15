@@ -1,10 +1,14 @@
 package ca.uqac.lif.units.examples.factory;
 
+import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
 
 public class LightbulbBox extends DimensionValue 
 {
+	protected static final Whole s_factor = Whole.get(12);
+	
 	public LightbulbBox(DimensionValue x)
 	{
 		super(x);
@@ -16,9 +20,9 @@ public class LightbulbBox extends DimensionValue
 	}
 	
 	@Override
-	protected double fromBaseUnit(double x)
+	protected Real fromBaseUnit(Real x)
 	{
-		return m_value / 12;
+		return m_value.divide(s_factor);
 	}
 
 	@Override
@@ -36,6 +40,6 @@ public class LightbulbBox extends DimensionValue
 	@Override
 	public Lightbulb asBaseUnit() 
 	{
-		return new Lightbulb(m_value * 12);
+		return new Lightbulb(m_value.multiply(s_factor));
 	}
 }

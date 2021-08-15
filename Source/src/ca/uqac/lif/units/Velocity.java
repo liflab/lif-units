@@ -1,5 +1,7 @@
 package ca.uqac.lif.units;
 
+import ca.uqac.lif.numbers.Real;
+
 /**
  * A speed value.
  * @author Sylvain Hallé
@@ -12,6 +14,11 @@ public abstract class Velocity extends DimensionValue
 	public static final Dimension DIMENSION = new Dimension().add(Quantity.LENGTH, 1).add(Quantity.TIME, -1);
 
 	public Velocity(DimensionValue x) 
+	{
+		super(x);
+	}
+	
+	public Velocity(Real x) 
 	{
 		super(x);
 	}

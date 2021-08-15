@@ -1,11 +1,15 @@
 package ca.uqac.lif.units.examples.factory;
 
+import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
 import ca.uqac.lif.units.NamelessDimensionValue;
 
 public class USDollarPerBox extends DimensionValue 
 {
+	protected static final Whole s_factor = Whole.get(12);
+	
 	public USDollarPerBox(DimensionValue x)
 	{
 		super(x);
@@ -17,9 +21,9 @@ public class USDollarPerBox extends DimensionValue
 	}
 	
 	@Override
-	protected double fromBaseUnit(double x)
+	protected Real fromBaseUnit(Real x)
 	{
-		return m_value * 12;
+		return m_value.multiply(s_factor);
 	}
 	
 	@Override
@@ -37,6 +41,6 @@ public class USDollarPerBox extends DimensionValue
 	@Override
 	public DimensionValue asBaseUnit() 
 	{
-		return new NamelessDimensionValue(m_value / 12, getDimension());
+		return new NamelessDimensionValue(m_value.divide(s_factor), getDimension());
 	}
 }

@@ -1,5 +1,7 @@
 package ca.uqac.lif.units;
 
+import ca.uqac.lif.numbers.Real;
+
 /**
  * A dimension value without a name, but which is assumed to be expressed in
  * the base units for each of its dimensions.
@@ -15,6 +17,12 @@ public class NamelessDimensionValue extends DimensionValue
 		m_dimension = d;
 	}
 	
+	public NamelessDimensionValue(/*@ non_null @*/ Real x, /*@ non_null @*/ Dimension d)
+	{
+		super(x);
+		m_dimension = d;
+	}
+	
 	public NamelessDimensionValue(/*@ non_null @*/ DimensionValue x)
 	{
 		super(x);
@@ -22,7 +30,7 @@ public class NamelessDimensionValue extends DimensionValue
 	}
 
 	@Override
-	protected double fromBaseUnit(double x) 
+	protected Real fromBaseUnit(Real x) 
 	{
 		return x;
 	}

@@ -1,5 +1,7 @@
 package ca.uqac.lif.units.computer;
 
+import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.units.DimensionValue;
 
 /**
@@ -9,6 +11,8 @@ import ca.uqac.lif.units.DimensionValue;
  */
 public class Kilobyte extends Memory
 {
+	protected static final Whole s_factor = Whole.get(1000);
+	
 	public Kilobyte(DimensionValue x)
 	{
 		super(x);
@@ -20,9 +24,9 @@ public class Kilobyte extends Memory
 	}
 	
 	@Override
-	protected double fromBaseUnit(double x)
+	protected Real fromBaseUnit(Real x)
 	{
-		return x / 1000;
+		return x.divide(s_factor);
 	}
 	
 	@Override
@@ -34,6 +38,6 @@ public class Kilobyte extends Memory
 	@Override
 	public Memory asBaseUnit()
 	{
-		return new Byte(m_value * 1000);
+		return new Byte(m_value.multiply(s_factor));
 	}
 }

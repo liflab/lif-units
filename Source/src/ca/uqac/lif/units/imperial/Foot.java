@@ -1,11 +1,18 @@
 package ca.uqac.lif.units.imperial;
 
+import ca.uqac.lif.numbers.Rational;
+import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.units.DimensionValue;
 import ca.uqac.lif.units.Length;
 import ca.uqac.lif.units.si.Meter;
 
 public class Foot extends Length
 {
+	/**
+	 * The conversion factor from the base unit.
+	 */
+	protected static final Rational s_factor = Rational.get(0.3048);
+	
 	public Foot(double x)
 	{
 		super(x);
@@ -23,14 +30,14 @@ public class Foot extends Length
 	}
 	
 	@Override
-	protected double fromBaseUnit(double x)
+	protected Real fromBaseUnit(Real x)
 	{
-		return x / 0.3048;
+		return x.divide(s_factor);
 	}
 	
 	@Override
 	public DimensionValue asBaseUnit()
 	{
-		return new Meter(m_value * 0.3048);
+		return new Meter(m_value.multiply(s_factor));
 	}
 }

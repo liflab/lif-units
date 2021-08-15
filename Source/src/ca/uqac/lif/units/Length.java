@@ -1,5 +1,7 @@
 package ca.uqac.lif.units;
 
+import ca.uqac.lif.numbers.Real;
+
 public abstract class Length extends DimensionValue
 {
 	/**
@@ -13,6 +15,11 @@ public abstract class Length extends DimensionValue
 	}
 	
 	public Length(/*@ non_null @*/ DimensionValue x)
+	{
+		super(x);
+	}
+	
+	public Length(/*@ non_null @*/ Real x)
 	{
 		super(x);
 	}

@@ -26,13 +26,13 @@ public class RationalTest
 		assertEquals(0, x.intValue());
 		assertEquals(0.5, x.floatValue(), 0.00001);
 		assertEquals(0.5, x.doubleValue(), 0.00001);
-		assertEquals("5/10", x.toString());
+		assertEquals("1/2", x.toString());
 	}
 	
 	@Test
 	public void testPrimeFactors1()
 	{
-		Map<Number,Real> factoring = new HashMap<Number,Real>();
+		Map<Integer,Integer> factoring = new HashMap<Integer,Integer>();
 		Rational.primeFactors(2, 1, factoring);
 		assertEquals(1, factoring.size());
 		assertEquals(1, factoring.get(2).intValue());
@@ -41,7 +41,7 @@ public class RationalTest
 	@Test
 	public void testPrimeFactors2()
 	{
-		Map<Number,Real> factoring = new HashMap<Number,Real>();
+		Map<Integer,Integer> factoring = new HashMap<Integer,Integer>();
 		Rational.primeFactors(2, 2, factoring);
 		assertEquals(1, factoring.size());
 		assertEquals(2, factoring.get(2).intValue());
@@ -50,7 +50,7 @@ public class RationalTest
 	@Test
 	public void testPrimeFactors3()
 	{
-		Map<Number,Real> factoring = new HashMap<Number,Real>();
+		Map<Integer,Integer> factoring = new HashMap<Integer,Integer>();
 		Rational.primeFactors(4, 1, factoring);
 		assertEquals(1, factoring.size());
 		assertEquals(2, factoring.get(2).intValue());
@@ -59,7 +59,7 @@ public class RationalTest
 	@Test
 	public void testPrimeFactors4()
 	{
-		Map<Number,Real> factoring = new HashMap<Number,Real>();
+		Map<Integer,Integer> factoring = new HashMap<Integer,Integer>();
 		Rational.primeFactors(12, 1, factoring);
 		assertEquals(2, factoring.size());
 		assertEquals(2, factoring.get(2).intValue());
@@ -69,7 +69,7 @@ public class RationalTest
 	@Test
 	public void testPrimeFactors5()
 	{
-		Map<Number,Real> factoring = new HashMap<Number,Real>();
+		Map<Integer,Integer> factoring = new HashMap<Integer,Integer>();
 		Rational.primeFactors(12, 2, factoring);
 		assertEquals(2, factoring.size());
 		assertEquals(4, factoring.get(2).intValue());
@@ -79,7 +79,7 @@ public class RationalTest
 	@Test
 	public void testPrimeFactors6()
 	{
-		Map<Number,Real> factoring = new HashMap<Number,Real>();
+		Map<Integer,Integer> factoring = new HashMap<Integer,Integer>();
 		Rational.primeFactors(1728, 1, factoring);
 		assertEquals(2, factoring.size());
 		assertEquals(6, factoring.get(2).intValue());
@@ -89,21 +89,65 @@ public class RationalTest
 	@Test
 	public void testSimplify1()
 	{
-		Real x = Rational.get(1, 2).simplify();
+		Real x = Rational.get(1, 2);
 		assertEquals("1/2", x.toString());
 	}
 	
 	@Test
 	public void testSimplify2()
 	{
-		Real x = Rational.get(3, 6).simplify();
+		Real x = Rational.get(3, 6);
 		assertEquals("1/2", x.toString());
 	}
 	
 	@Test
 	public void testSimplify3()
 	{
-		Real x = Rational.get(0.21875).simplify();
+		Real x = Rational.get(0.21875);
 		assertEquals("7/32", x.toString());
+	}
+	
+	@Test
+	public void testAdd1()
+	{
+		Real x = Rational.get(1, 2);
+		Real y = Rational.get(1, 4);
+		Real z = x.add(y);
+		assertTrue(z instanceof Rational);
+		assertEquals(0.75, z.doubleValue(), 0.0001);
+		assertEquals("3/4", z.toString());
+	}
+	
+	@Test
+	public void testAdd2()
+	{
+		Real x = Rational.get(1, 3);
+		Real y = Rational.get(5, 8);
+		Real z = x.add(y);
+		assertTrue(z instanceof Rational);
+		assertEquals(0.958333, z.doubleValue(), 0.0001);
+		assertEquals("23/24", z.toString());
+	}
+	
+	@Test
+	public void testMultiply1()
+	{
+		Real x = Rational.get(1, 3);
+		Real y = Rational.get(5, 8);
+		Real z = x.multiply(y);
+		assertTrue(z instanceof Rational);
+		assertEquals(0.208333, z.doubleValue(), 0.0001);
+		assertEquals("5/24", z.toString());
+	}
+	
+	@Test
+	public void testDivide1()
+	{
+		Real x = Rational.get(1, 3);
+		Real y = Rational.get(5, 8);
+		Real z = x.divide(y);
+		assertTrue(z instanceof Rational);
+		assertEquals(0.53333, z.doubleValue(), 0.0001);
+		assertEquals("8/15", z.toString());
 	}
 }

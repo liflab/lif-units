@@ -1,5 +1,7 @@
 package ca.uqac.lif.units;
 
+import ca.uqac.lif.numbers.Real;
+
 /**
  * A time value.
  * @author Sylvain Hallé
@@ -17,6 +19,11 @@ public abstract class Time extends DimensionValue
 	}
 	
 	public Time(/*@ non_null @*/ DimensionValue x)
+	{
+		super(x);
+	}
+	
+	public Time(/*@ non_null @*/ Real x)
 	{
 		super(x);
 	}

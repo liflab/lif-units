@@ -26,7 +26,7 @@ public class UnitMultiplyTest
 		DimensionValue out = (DimensionValue) f.evaluate(len1, len2)[0];
 		assertNotNull(out);
 		assertTrue(out instanceof NamelessDimensionValue);
-		assertEquals(2, out.get(), 0.0001);
+		assertEquals(2, out.get().doubleValue(), 0.0001);
 		assertEquals(out.getDimension(), SurfaceValue.DIMENSION);
 	}
 	
@@ -39,7 +39,7 @@ public class UnitMultiplyTest
 		DimensionValue out = (DimensionValue) f.evaluate(len1, len2)[0];
 		assertNotNull(out);
 		assertTrue(out instanceof NamelessDimensionValue);
-		assertEquals(0.02, out.get(), 0.0001);
+		assertEquals(0.02, out.get().doubleValue(), 0.0001);
 		assertEquals(out.getDimension(), SurfaceValue.DIMENSION);
 	}
 	
@@ -52,7 +52,7 @@ public class UnitMultiplyTest
 		DimensionValue out = (DimensionValue) f.evaluate(len1, len2)[0];
 		assertNotNull(out);
 		assertTrue(out instanceof NamelessDimensionValue);
-		assertEquals(0.0254, out.get(), 0.0001);
+		assertEquals(0.0254, out.get().doubleValue(), 0.0001);
 		assertEquals(out.getDimension(), SurfaceValue.DIMENSION);
 	}
 	
@@ -65,9 +65,9 @@ public class UnitMultiplyTest
 		DimensionValue out = (DimensionValue) f.evaluate(len1, fre1)[0];
 		assertNotNull(out);
 		assertTrue(out instanceof NamelessDimensionValue);
-		assertEquals(1, out.get(), 0.0001);
+		assertEquals(1, out.get().doubleValue(), 0.0001);
 		assertEquals(out.getDimension(), Velocity.DIMENSION);
 		MilesPerHour mph = new MilesPerHour(out);
-		assertEquals(2.2369, mph.get(), 0.0001);
+		assertEquals(2.2369, mph.get().doubleValue(), 0.0001);
 	}
 }

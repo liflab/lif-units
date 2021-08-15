@@ -34,6 +34,28 @@ public class WholeTest
 	}
 	
 	@Test
+	public void testConstructor2()
+	{
+		Real x = Whole.get(1, 0.5);
+		assertEquals(1, x.intValue());
+		assertEquals(1, x.floatValue(), 0.00001);
+		assertEquals(1, x.doubleValue(), 0.00001);
+		assertEquals(0.5, x.getUncertainty(), 0.00001);
+		assertEquals("(1 \u00b1 0.5)", x.toString());
+	}
+	
+	@Test
+	public void testConstructor3()
+	{
+		Real x = Whole.get(1, 0.333);
+		assertEquals(1, x.intValue());
+		assertEquals(1, x.floatValue(), 0.00001);
+		assertEquals(1, x.doubleValue(), 0.00001);
+		assertEquals(0.3, x.getUncertainty(), 0.00001);
+		assertEquals("(1 \u00b1 0.3)", x.toString());
+	}
+	
+	@Test
 	public void testAddInteger1()
 	{
 		Real x = Whole.get(1);

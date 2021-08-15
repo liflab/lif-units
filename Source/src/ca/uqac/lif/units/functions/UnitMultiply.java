@@ -1,5 +1,7 @@
 package ca.uqac.lif.units.functions;
 
+import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.petitpoucet.function.InvalidArgumentTypeException;
 import ca.uqac.lif.petitpoucet.function.number.Multiplication;
 import ca.uqac.lif.units.Dimension;
@@ -23,7 +25,7 @@ public class UnitMultiply extends Multiplication
 	{
 		DimensionValue[] out = new DimensionValue[1];
 		Dimension target_dim = new Dimension();
-		double si_prod = 1;
+		Real si_prod = Whole.ONE;
 		for (int i = 0; i < inputs.length; i++)
 		{
 			Object o = inputs[i];
@@ -33,8 +35,8 @@ public class UnitMultiply extends Multiplication
 			}
 			DimensionValue v = (DimensionValue) o;
 			target_dim.add(v.getDimension());
-			double val = v.asBaseUnit().get();
-			if (val == 0)
+			Real val = v.asBaseUnit().get();
+			if (val.doubleValue() == 0)
 			{
 				m_nulls[i] = true;
 			}
@@ -42,7 +44,7 @@ public class UnitMultiply extends Multiplication
 			{
 				m_nulls[i] = false;
 			}
-			si_prod *= val;
+			si_prod = si_prod.multiply(val);
 		}
 		out[0] = new NamelessDimensionValue(si_prod, target_dim);
 		return out;

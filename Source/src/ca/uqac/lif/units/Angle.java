@@ -1,5 +1,7 @@
 package ca.uqac.lif.units;
 
+import ca.uqac.lif.numbers.Real;
+
 public abstract class Angle extends DimensionValue
 {
 	/**
@@ -13,6 +15,11 @@ public abstract class Angle extends DimensionValue
 	}
 	
 	public Angle(/*@ non_null @*/ DimensionValue x)
+	{
+		super(x);
+	}
+	
+	public Angle(/*@ non_null @*/ Real x)
 	{
 		super(x);
 	}

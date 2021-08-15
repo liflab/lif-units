@@ -1,5 +1,7 @@
 package ca.uqac.lif.units;
 
+import ca.uqac.lif.numbers.Real;
+
 public class Scalar extends DimensionValue 
 {
 	public static final Dimension DIMENSION = new Dimension();
@@ -21,7 +23,7 @@ public class Scalar extends DimensionValue
 	}
 
 	@Override
-	protected double fromBaseUnit(double x) 
+	protected Real fromBaseUnit(Real x) 
 	{
 		return x;
 	}
@@ -35,7 +37,7 @@ public class Scalar extends DimensionValue
 	@Override
 	public String toString()
 	{
-		return Double.toHexString(m_value);
+		return m_value.toString();
 	}
 
 }

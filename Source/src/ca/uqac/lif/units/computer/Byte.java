@@ -1,5 +1,6 @@
 package ca.uqac.lif.units.computer;
 
+import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.units.DimensionValue;
 
 public class Byte extends Memory
@@ -9,7 +10,7 @@ public class Byte extends Memory
 		super(x);
 	}
 	
-	public Byte(double x)
+	public Byte(Real x)
 	{
 		super(x);
 	}
@@ -27,7 +28,7 @@ public class Byte extends Memory
 	}
 	
 	@Override
-	protected double fromBaseUnit(double x)
+	protected Real fromBaseUnit(Real x)
 	{
 		return x;
 	}

@@ -22,7 +22,7 @@ public class UnitAddTest
 		DimensionValue out = (DimensionValue) f.evaluate(len1, len2)[0];
 		assertNotNull(out);
 		assertTrue(out instanceof Meter);
-		assertEquals(3, out.get(), 0.0001);
+		assertEquals(3, out.get().doubleValue(), 0.0001);
 	}
 	
 	@Test
@@ -34,7 +34,7 @@ public class UnitAddTest
 		DimensionValue out = (DimensionValue) f.evaluate(len1, len2)[0];
 		assertNotNull(out);
 		assertTrue(out instanceof Meter);
-		assertEquals(1.02, out.get(), 0.0001);
+		assertEquals(1.02, out.get().doubleValue(), 0.0001);
 	}
 	
 	@Test
@@ -46,7 +46,7 @@ public class UnitAddTest
 		DimensionValue out = (DimensionValue) f.evaluate(len1, len2)[0];
 		assertNotNull(out);
 		assertTrue(out instanceof Inch);
-		assertEquals(41.3700, out.get(), 0.0001);
+		assertEquals(41.3700, out.get().doubleValue(), 0.0001);
 	}
 	
 	@Test(expected = FunctionException.class)

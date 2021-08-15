@@ -1,5 +1,7 @@
 package ca.uqac.lif.units.functions;
 
+import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.petitpoucet.function.FunctionException;
 import ca.uqac.lif.petitpoucet.function.InvalidArgumentTypeException;
 import ca.uqac.lif.petitpoucet.function.number.Addition;
@@ -25,7 +27,7 @@ public class UnitAdd extends Addition
 		DimensionValue[] out = new DimensionValue[1];
 		Dimension target_dim = null;
 		DimensionValue target_unit = null;
-		double si_sum = 0;
+		Real si_sum = Whole.ZERO;
 		for (Object o : inputs)
 		{
 			if (!(o instanceof DimensionValue))
@@ -45,7 +47,7 @@ public class UnitAdd extends Addition
 					throw new InvalidArgumentTypeException("Cannot add " + target_dim + " with " + v.getDimension());
 				}
 			}
-			si_sum += v.asBaseUnit().get();
+			si_sum = si_sum.add(v.asBaseUnit().get());
 		}
 		try
 		{
