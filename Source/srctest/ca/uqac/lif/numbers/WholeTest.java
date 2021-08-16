@@ -67,6 +67,18 @@ public class WholeTest
 	}
 	
 	@Test
+	public void testConstructor5()
+	{
+		Real x = Whole.get(1204, 100);
+		// We get 1200 because the uncertainty is +/- 100
+		assertEquals(1200, x.intValue());
+		assertEquals(1200, x.floatValue(), 0.00001);
+		assertEquals(1200, x.doubleValue(), 0.00001);
+		assertEquals(100, x.getUncertainty(), 0.00001);
+		assertEquals("(1200 \u00b1 100)", x.toString());
+	}
+	
+	@Test
 	public void testAdd1()
 	{
 		Real x = Whole.get(1);
@@ -85,6 +97,17 @@ public class WholeTest
 		assertTrue(z instanceof Whole);
 		assertEquals(3, z.intValue());
 		assertEquals(1, z.getUncertainty(), 0.00001);
+	}
+	
+	@Test
+	public void testAdd3()
+	{
+		Real x = Whole.get(125, 2);
+		Real y = Whole.get(130, 20);
+		Real z = x.add(y);
+		assertTrue(z instanceof Whole);
+		assertEquals(260, z.intValue());
+		assertEquals(30, z.getUncertainty(), 0.00001);
 	}
 	
 	@Test

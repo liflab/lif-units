@@ -17,6 +17,9 @@
  */
 package ca.uqac.lif.numbers;
 
+import static ca.uqac.lif.numbers.NumberFormatter.roundToPrecision;
+import static ca.uqac.lif.numbers.NumberFormatter.roundUpToSignificantFigures;
+
 /**
  * A real represented by a floating point decimal number. This is the least
  * symbolic representation of a real number; any arithmetic operation involving
@@ -65,8 +68,8 @@ public class FloatingPoint implements Real
 	protected FloatingPoint(double value, double uncertainty)
 	{
 		super();
-		m_value = value;
-		m_uncertainty = NumberFormatter.roundUpToSignificantFigures(Math.abs(uncertainty), 1);
+		m_uncertainty = roundUpToSignificantFigures(Math.abs(uncertainty), 1);
+		m_value = roundToPrecision(value, m_uncertainty);
 	}
 	
 	/**
@@ -143,7 +146,7 @@ public class FloatingPoint implements Real
 			return NumberFormatter.display(m_value);
 		}
 		StringBuilder out = new StringBuilder();
-		out.append("(").append(NumberFormatter.display(m_value)).append(" \u00b1 ").append(m_uncertainty).append(")");
+		out.append("(").append(NumberFormatter.display(m_value)).append(" \u00b1 ").append(NumberFormatter.display(m_uncertainty)).append(")");
 		return out.toString();
 	}
 	

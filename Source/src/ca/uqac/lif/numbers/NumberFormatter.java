@@ -75,8 +75,8 @@ public class NumberFormatter
 	/**
 	 * Rounds a number not to exceed the precision of another number. The
 	 * precision is defined as the smallest power of 10 with a non-zero digit.
-	 * The actual value of the target number is irrelevant; only its precision
-	 * is used. Some examples:
+	 * The actual value of the target number is irrelevant (except for 0);
+	 * only its precision is used. Some examples:
 	 * <ul>
 	 * <li>if the number to round is 123.456 and its target number is 0.03,
 	 * the result is 123.45, since the target number has two decimals</li>
@@ -87,10 +87,15 @@ public class NumberFormatter
 	 * result is 120, as the target number is precise up to 10²</li>
 	 * </ul> 
 	 * @param x The number to round
-	 * @param target The target number whose precision is to be matched
+	 * @param target The target number whose precision is to be matched.
+	 * If target = 0, no rounding is performed and x is returned as is.
 	 */
 	public static double roundToPrecision(double x, double target)
 	{
+		if (target == 0)
+		{
+			return x;
+		}
 		return roundToPower(x, getPrecision(target));
 	}
 

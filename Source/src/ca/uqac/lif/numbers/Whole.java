@@ -17,6 +17,9 @@
  */
 package ca.uqac.lif.numbers;
 
+import static ca.uqac.lif.numbers.NumberFormatter.roundToPrecision;
+import static ca.uqac.lif.numbers.NumberFormatter.roundUpToSignificantFigures;
+
 /**
  * A real number with no fractional part. Whole numbers have a simpler
  * internal representation, and arithmetic operations between whole numbers
@@ -83,8 +86,8 @@ public class Whole implements Real
 	private Whole(int value, double uncertainty)
 	{
 		super();
-		m_value = value;
-		m_uncertainty = NumberFormatter.roundUpToSignificantFigures(Math.abs(uncertainty), 1);
+		m_uncertainty = roundUpToSignificantFigures(Math.abs(uncertainty), 1);
+		m_value = (int) roundToPrecision(value, m_uncertainty);
 	}
 	
 	/**
@@ -203,7 +206,7 @@ public class Whole implements Real
 			return Integer.toString(m_value);
 		}
 		StringBuilder out = new StringBuilder();
-		out.append("(").append(m_value).append(" \u00b1 ").append(m_uncertainty).append(")");
+		out.append("(").append(m_value).append(" \u00b1 ").append(NumberFormatter.display(m_uncertainty)).append(")");
 		return out.toString();
 	}
 	

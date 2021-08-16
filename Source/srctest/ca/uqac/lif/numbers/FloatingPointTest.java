@@ -22,37 +22,198 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class FloatingPointTest
+public class FloatingPointTest 
 {
+	@Test
+	public void testConstructor1()
+	{
+		Real x = FloatingPoint.get(1);
+		assertEquals(1, x.intValue());
+		assertEquals(1, x.floatValue(), 0.00001);
+		assertEquals(1, x.doubleValue(), 0.00001);
+		assertEquals("1", x.toString());
+	}
+
 	@Test
 	public void testConstructor2()
 	{
-		Real x = new FloatingPoint(1, 0.5);
+		Real x = FloatingPoint.get(1, 0.5);
 		assertEquals(1, x.intValue());
 		assertEquals(1, x.floatValue(), 0.00001);
 		assertEquals(1, x.doubleValue(), 0.00001);
 		assertEquals(0.5, x.getUncertainty(), 0.00001);
 		assertEquals("(1 \u00b1 0.5)", x.toString());
 	}
-	
+
 	@Test
 	public void testConstructor3()
 	{
-		Real x = new FloatingPoint(1, 0.333);
+		Real x = FloatingPoint.get(1, 0.333);
 		assertEquals(1, x.intValue());
 		assertEquals(1, x.floatValue(), 0.00001);
 		assertEquals(1, x.doubleValue(), 0.00001);
 		assertEquals(0.4, x.getUncertainty(), 0.00001);
 		assertEquals("(1 \u00b1 0.4)", x.toString());
 	}
-	
+
+	@Test
+	public void testConstructor4()
+	{
+		Real x = FloatingPoint.get(1, -0.333);
+		assertEquals(1, x.intValue());
+		assertEquals(1, x.floatValue(), 0.00001);
+		assertEquals(1, x.doubleValue(), 0.00001);
+		assertEquals(0.4, x.getUncertainty(), 0.00001);
+		assertEquals("(1 \u00b1 0.4)", x.toString());
+	}
+
+	@Test
+	public void testConstructor5()
+	{
+		Real x = FloatingPoint.get(1204, 100);
+		// We get 1200 because the uncertainty is +/- 100
+		assertEquals(1200, x.intValue());
+		assertEquals(1200, x.floatValue(), 0.00001);
+		assertEquals(1200, x.doubleValue(), 0.00001);
+		assertEquals(100, x.getUncertainty(), 0.00001);
+		assertEquals("(1200 \u00b1 100)", x.toString());
+	}
+
+	@Test
+	public void testAdd1()
+	{
+		Real x = FloatingPoint.get(1);
+		Real y = FloatingPoint.get(2);
+		Real z = x.add(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(3, z.intValue());
+	}
+
+	@Test
+	public void testAdd2()
+	{
+		Real x = FloatingPoint.get(1, 0.5);
+		Real y = FloatingPoint.get(2, 0.5);
+		Real z = x.add(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(3, z.intValue());
+		assertEquals(1, z.getUncertainty(), 0.00001);
+	}
+
+	@Test
+	public void testAdd3()
+	{
+		Real x = FloatingPoint.get(125, 2);
+		Real y = FloatingPoint.get(130, 20);
+		Real z = x.add(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(260, z.intValue());
+		assertEquals(30, z.getUncertainty(), 0.00001);
+	}
+
 	@Test
 	public void testMultiply1()
+	{
+		Real x = FloatingPoint.get(3);
+		Real y = FloatingPoint.get(2);
+		Real z = x.multiply(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(6, z.intValue());
+	}
+
+	@Test
+	public void testMultiply2()
+	{
+		Real x = FloatingPoint.get(3, 0.5);
+		Real y = FloatingPoint.get(2, 0.1);
+		Real z = x.multiply(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(6, z.intValue());
+		assertEquals(2, z.getUncertainty(), 0.00001);
+	}
+
+	@Test
+	public void testMultiply3()
+	{
+		Real x = FloatingPoint.get(3, 0.5);
+		Real y = FloatingPoint.get(1.5, 0.1);
+		Real z = x.multiply(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(5, z.intValue());
+		assertEquals(2, z.getUncertainty(), 0.00001);
+	}
+	
+	@Test
+	public void testMultiply4()
+	{
+		Real x = FloatingPoint.get(3, 0.1);
+		Real y = FloatingPoint.get(1.5, 0.1);
+		Real z = x.multiply(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(4.5, z.doubleValue(), 0.00001);
+		assertEquals(0.5, z.getUncertainty(), 0.00001);
+	}
+	
+	@Test
+	public void testMultiply5()
 	{
 		Real x = new FloatingPoint(1d / 3);
 		Real y = new FloatingPoint(5d / 8);
 		Real z = x.multiply(y);
 		assertTrue(z instanceof FloatingPoint);
 		assertEquals(0.208333, z.doubleValue(), 0.0001);
+	}
+
+	@Test
+	public void testDivide1()
+	{
+		Real x = FloatingPoint.get(6);
+		Real y = FloatingPoint.get(2);
+		Real z = x.divide(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(3, z.intValue());
+	}
+
+	@Test
+	public void testDivide2()
+	{
+		Real x = FloatingPoint.get(6, 0.5);
+		Real y = FloatingPoint.get(2, 0.1);
+		Real z = x.divide(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(3, z.intValue());
+		assertEquals(0.4, z.getUncertainty(), 0.00001);
+	}
+
+	@Test
+	public void testDivide3()
+	{
+		Real x = FloatingPoint.get(3, 0.5);
+		Real y = FloatingPoint.get(2, 0.1);
+		Real z = x.divide(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(1.5, z.doubleValue(), 0.00001);
+		assertEquals(0.4, z.getUncertainty(), 0.00001);
+	}
+
+	@Test
+	public void testPow1()
+	{
+		Real x = FloatingPoint.get(3);
+		Real y = FloatingPoint.get(2);
+		Real z = x.pow(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(9, z.intValue());
+	}
+
+	@Test
+	public void testPow2()
+	{
+		Real x = FloatingPoint.get(3, 0.5);
+		Real y = FloatingPoint.get(2, 0.1);
+		Real z = x.pow(y);
+		assertTrue(z instanceof FloatingPoint);
+		assertEquals(9, z.intValue());
+		assertEquals(3, z.getUncertainty(), 0.00001);
 	}
 }
