@@ -51,8 +51,19 @@ public class WholeTest
 		assertEquals(1, x.intValue());
 		assertEquals(1, x.floatValue(), 0.00001);
 		assertEquals(1, x.doubleValue(), 0.00001);
-		assertEquals(0.3, x.getUncertainty(), 0.00001);
-		assertEquals("(1 \u00b1 0.3)", x.toString());
+		assertEquals(0.4, x.getUncertainty(), 0.00001);
+		assertEquals("(1 \u00b1 0.4)", x.toString());
+	}
+	
+	@Test
+	public void testConstructor4()
+	{
+		Real x = Whole.get(1, -0.333);
+		assertEquals(1, x.intValue());
+		assertEquals(1, x.floatValue(), 0.00001);
+		assertEquals(1, x.doubleValue(), 0.00001);
+		assertEquals(0.4, x.getUncertainty(), 0.00001);
+		assertEquals("(1 \u00b1 0.4)", x.toString());
 	}
 	
 	@Test
@@ -63,5 +74,37 @@ public class WholeTest
 		Real z = x.add(y);
 		assertTrue(z instanceof Whole);
 		assertEquals(3, z.intValue());
+	}
+	
+	@Test
+	public void testAddInteger2()
+	{
+		Real x = Whole.get(1, 0.5);
+		Real y = Whole.get(2, 0.5);
+		Real z = x.add(y);
+		assertTrue(z instanceof Whole);
+		assertEquals(3, z.intValue());
+		assertEquals(1, z.getUncertainty(), 0.00001);
+	}
+	
+	@Test
+	public void testMultiplyInteger1()
+	{
+		Real x = Whole.get(3);
+		Real y = Whole.get(2);
+		Real z = x.multiply(y);
+		assertTrue(z instanceof Whole);
+		assertEquals(6, z.intValue());
+	}
+	
+	@Test
+	public void testMultiplyInteger2()
+	{
+		Real x = Whole.get(3, 0.5);
+		Real y = Whole.get(2, 0.1);
+		Real z = x.multiply(y);
+		assertTrue(z instanceof Whole);
+		assertEquals(6, z.intValue());
+		assertEquals(2, z.getUncertainty(), 0.00001);
 	}
 }

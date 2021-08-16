@@ -15,22 +15,25 @@
   See the License for the specific language governing permissions and
   limitations under the License.
  */
-package ca.uqac.lif.units;
+package ca.uqac.lif.numbers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static ca.uqac.lif.numbers.NumberFormatter.roundToSignificantFigures;
+import static ca.uqac.lif.numbers.NumberFormatter.roundUpToSignificantFigures;
 
 import org.junit.Test;
 
-import ca.uqac.lif.units.functions.UnitDivide;
-import ca.uqac.lif.units.si.Meter;
-
-public class UnitDivideTest 
+public class NumberFormatterTest 
 {
 	@Test
-	public void testSameUnit1()
+	public void testSignificantFigures1()
 	{
-		DimensionValue v = UnitDivide.get(new Meter(4), new Meter(2));
-		DimensionValue m = v.asBaseUnit();
-		assertEquals(2, m.get().doubleValue(), 0.0001);
+		assertEquals(1, roundToSignificantFigures(1.3, 1), 0.0001);
+	}
+	
+	@Test
+	public void testSignificantFiguresUp1()
+	{
+		assertEquals(2, roundUpToSignificantFigures(1.3, 1), 0.0001);
 	}
 }

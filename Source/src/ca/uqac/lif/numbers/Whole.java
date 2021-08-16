@@ -84,7 +84,7 @@ public class Whole implements Real
 	{
 		super();
 		m_value = value;
-		m_uncertainty = Math.abs(NumberFormatter.roundToSignificantFigures(uncertainty, 1));
+		m_uncertainty = NumberFormatter.roundUpToSignificantFigures(Math.abs(uncertainty), 1);
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class Whole implements Real
 		{
 			return x.add(this);
 		}
-		return Whole.get(m_value + x.intValue());
+		return Whole.get(m_value + x.intValue(), m_uncertainty + x.getUncertainty());
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class Whole implements Real
 		{
 			return x.subtract(opposite());
 		}
-		return Whole.get(m_value - x.intValue());
+		return Whole.get(m_value - x.intValue(), m_uncertainty + x.getUncertainty());
 	}
 
 	@Override
@@ -134,7 +134,8 @@ public class Whole implements Real
 		{
 			return x.divide(this);
 		}
-		return Whole.get(m_value / x.intValue());
+		int new_value = m_value / x.intValue();
+		return Whole.get(new_value, (double) new_value * (getRelativeUncertainty() + x.getRelativeUncertainty()));
 	}
 
 	@Override
@@ -144,13 +145,14 @@ public class Whole implements Real
 		{
 			return x.multiply(this);
 		}
-		return Whole.get(m_value * x.intValue());
+		int new_value = m_value * x.intValue();
+		return Whole.get(new_value, (double) new_value * (getRelativeUncertainty() + x.getRelativeUncertainty()));
 	}
 	
 	@Override
 	/*@ pure @*/ public Real opposite() 
 	{
-		return Whole.get(-m_value);
+		return Whole.get(-m_value, m_uncertainty);
 	}
 
 	@Override
@@ -175,6 +177,12 @@ public class Whole implements Real
 	/*@ pure @*/ public double getUncertainty()
 	{
 		return m_uncertainty;
+	}
+	
+	@Override
+	/*@ pure @*/ public double getRelativeUncertainty()
+	{
+		return m_uncertainty / (double) m_value;
 	}
 	
 	@Override

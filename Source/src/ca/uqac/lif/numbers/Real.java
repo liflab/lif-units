@@ -97,4 +97,10 @@ public interface Real
 	 * @return The uncertainty
 	 */
 	public double getUncertainty();
+	
+	/**
+	 * Gets the relative uncertainty associated to this real number.
+	 * @return The relative uncertainty
+	 */
+	public double getRelativeUncertainty();
 }

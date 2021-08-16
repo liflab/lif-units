@@ -41,7 +41,7 @@ public class NumberFormatter
 	 */
 	public static double roundToSignificantFigures(double num, int n) 
 	{
-		if(num == 0) 
+		if (num == 0) 
 		{
 			return 0;
 		}
@@ -49,6 +49,26 @@ public class NumberFormatter
 		final int power = n - (int) d;
 		final double magnitude = Math.pow(10, power);
 		final long shifted = Math.round(num*magnitude);
+		return shifted/magnitude;
+	}
+	
+	/**
+	 * Calculates the ceiling of a number expressed to n significant figures.
+	 * Found from <a href="http://stackoverflow.com/a/1581007">StackOverflow</a>
+	 * @param num The number
+	 * @param n The number of significant figures
+	 * @return The resulting number
+	 */
+	public static double roundUpToSignificantFigures(double num, int n) 
+	{
+		if (num == 0) 
+		{
+			return 0;
+		}
+		final double d = Math.ceil(Math.log10(num < 0 ? -num: num));
+		final int power = n - (int) d;
+		final double magnitude = Math.pow(10, power);
+		final long shifted = (long) Math.ceil(num*magnitude);
 		return shifted/magnitude;
 	}
 

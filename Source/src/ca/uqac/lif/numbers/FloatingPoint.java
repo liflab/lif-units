@@ -47,7 +47,7 @@ public class FloatingPoint implements Real
 	{
 		super();
 		m_value = value;
-		m_uncertainty = Math.abs(NumberFormatter.roundToSignificantFigures(uncertainty, 1));
+		m_uncertainty = NumberFormatter.roundUpToSignificantFigures(Math.abs(uncertainty), 1);
 	}
 	
 	/**
@@ -143,13 +143,19 @@ public class FloatingPoint implements Real
 	}
 	
 	@Override
-	public double getUncertainty()
+	/*@ pure @*/ public double getUncertainty()
 	{
 		return m_uncertainty;
 	}
 	
 	@Override
-	public Real inverse() 
+	/*@ pure @*/ public double getRelativeUncertainty()
+	{
+		return m_uncertainty / (double) m_value;
+	}
+	
+	@Override
+	/*@ pure non_null @*/ public Real inverse() 
 	{
 		return Rational.get(1, 1).divide(this); 
 	}
