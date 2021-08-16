@@ -42,8 +42,8 @@ public class FloatingPointTest
 		assertEquals(1, x.intValue());
 		assertEquals(1, x.floatValue(), 0.00001);
 		assertEquals(1, x.doubleValue(), 0.00001);
-		assertEquals(0.3, x.getUncertainty(), 0.00001);
-		assertEquals("(1 \u00b1 0.3)", x.toString());
+		assertEquals(0.4, x.getUncertainty(), 0.00001);
+		assertEquals("(1 \u00b1 0.4)", x.toString());
 	}
 	
 	@Test

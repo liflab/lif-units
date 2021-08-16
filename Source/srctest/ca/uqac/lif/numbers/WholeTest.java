@@ -67,7 +67,7 @@ public class WholeTest
 	}
 	
 	@Test
-	public void testAddInteger1()
+	public void testAdd1()
 	{
 		Real x = Whole.get(1);
 		Real y = Whole.get(2);
@@ -77,7 +77,7 @@ public class WholeTest
 	}
 	
 	@Test
-	public void testAddInteger2()
+	public void testAdd2()
 	{
 		Real x = Whole.get(1, 0.5);
 		Real y = Whole.get(2, 0.5);
@@ -88,7 +88,7 @@ public class WholeTest
 	}
 	
 	@Test
-	public void testMultiplyInteger1()
+	public void testMultiply1()
 	{
 		Real x = Whole.get(3);
 		Real y = Whole.get(2);
@@ -98,7 +98,7 @@ public class WholeTest
 	}
 	
 	@Test
-	public void testMultiplyInteger2()
+	public void testMultiply2()
 	{
 		Real x = Whole.get(3, 0.5);
 		Real y = Whole.get(2, 0.1);
@@ -106,5 +106,58 @@ public class WholeTest
 		assertTrue(z instanceof Whole);
 		assertEquals(6, z.intValue());
 		assertEquals(2, z.getUncertainty(), 0.00001);
+	}
+	
+	@Test
+	public void testDivide1()
+	{
+		Real x = Whole.get(6);
+		Real y = Whole.get(2);
+		Real z = x.divide(y);
+		assertTrue(z instanceof Whole);
+		assertEquals(3, z.intValue());
+	}
+	
+	@Test
+	public void testDivide2()
+	{
+		Real x = Whole.get(6, 0.5);
+		Real y = Whole.get(2, 0.1);
+		Real z = x.divide(y);
+		assertTrue(z instanceof Whole);
+		assertEquals(3, z.intValue());
+		assertEquals(0.4, z.getUncertainty(), 0.00001);
+	}
+	
+	@Test
+	public void testDivide3()
+	{
+		Real x = Whole.get(3, 0.5);
+		Real y = Whole.get(2, 0.1);
+		Real z = x.divide(y);
+		assertTrue(z instanceof Rational);
+		assertEquals(1.5, z.doubleValue(), 0.00001);
+		assertEquals(0.4, z.getUncertainty(), 0.00001);
+	}
+	
+	@Test
+	public void testPow1()
+	{
+		Real x = Whole.get(3);
+		Real y = Whole.get(2);
+		Real z = x.pow(y);
+		assertTrue(z instanceof Whole);
+		assertEquals(9, z.intValue());
+	}
+	
+	@Test
+	public void testPow2()
+	{
+		Real x = Whole.get(3, 0.5);
+		Real y = Whole.get(2, 0.1);
+		Real z = x.pow(y);
+		assertTrue(z instanceof Whole);
+		assertEquals(9, z.intValue());
+		assertEquals(3, z.getUncertainty(), 0.00001);
 	}
 }

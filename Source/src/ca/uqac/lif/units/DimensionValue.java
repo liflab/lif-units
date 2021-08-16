@@ -25,7 +25,7 @@ public abstract class DimensionValue
 	public DimensionValue(double d)
 	{
 		super();
-		m_value = new FloatingPoint(d);
+		m_value = FloatingPoint.get(d);
 	}
 	
 	/**

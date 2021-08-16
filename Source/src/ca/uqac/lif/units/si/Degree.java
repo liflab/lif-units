@@ -31,7 +31,7 @@ public class Degree extends Angle
 	/**
 	 * The conversion factor from the base unit.
 	 */
-	protected static final FloatingPoint s_factor = new FloatingPoint(180 / Math.PI);
+	protected static final FloatingPoint s_factor = FloatingPoint.get(180 / Math.PI);
 	
 	public Degree(double d)
 	{

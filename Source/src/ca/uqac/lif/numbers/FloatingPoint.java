@@ -43,7 +43,26 @@ public class FloatingPoint implements Real
 	 * @param value The value of the floating point number
 	 * @param uncertainty The uncertainty associated to this number
 	 */
-	public FloatingPoint(double value, double uncertainty)
+	/*@ non_null @*/ public static FloatingPoint get(double value, double uncertainty)
+	{
+		return new FloatingPoint(value, uncertainty);
+	}
+	
+	/**
+	 * Creates a new floating point number.
+	 * @param uncertainty The uncertainty associated to this number
+	 */
+	/*@ non_null @*/ public static FloatingPoint get(double value)
+	{
+		return new FloatingPoint(value);
+	}
+	
+	/**
+	 * Creates a new floating point number and specifies its uncertainty.
+	 * @param value The value of the floating point number
+	 * @param uncertainty The uncertainty associated to this number
+	 */
+	protected FloatingPoint(double value, double uncertainty)
 	{
 		super();
 		m_value = value;
@@ -54,7 +73,7 @@ public class FloatingPoint implements Real
 	 * Creates a new floating point number.
 	 * @param value The value of the floating point number
 	 */
-	public FloatingPoint(double value)
+	protected FloatingPoint(double value)
 	{
 		this(value, 0);
 	}
@@ -62,31 +81,34 @@ public class FloatingPoint implements Real
 	@Override
 	public FloatingPoint add(Real x) 
 	{
-		return new FloatingPoint(m_value + x.doubleValue());
+		return FloatingPoint.get(m_value + x.doubleValue(), m_uncertainty + x.getUncertainty());
 	}
 
 	@Override
 	public FloatingPoint subtract(Real x) 
 	{
-		return new FloatingPoint(m_value - x.doubleValue());
+		return FloatingPoint.get(m_value - x.doubleValue(), m_uncertainty + x.getUncertainty());
 	}
 
 	@Override
 	public FloatingPoint divide(Real x) 
 	{
-		return new FloatingPoint(m_value / x.doubleValue());
+		double new_value = m_value / x.doubleValue();
+		return FloatingPoint.get(new_value, new_value * (getRelativeUncertainty() + x.getRelativeUncertainty()));
 	}
 
 	@Override
 	public FloatingPoint multiply(Real x)
 	{
-		return new FloatingPoint(m_value * x.doubleValue());
+		double new_value = m_value * x.doubleValue();
+		return FloatingPoint.get(new_value, new_value * (getRelativeUncertainty() + x.getRelativeUncertainty()));
 	}
 	
 	@Override
 	public Real pow(Real x) 
 	{
-		return new FloatingPoint(Math.pow(m_value, x.doubleValue()));
+		double new_value = Math.pow(m_value, x.doubleValue());
+		return FloatingPoint.get(new_value, x.doubleValue() * new_value * getRelativeUncertainty());
 	}
 	
 	@Override

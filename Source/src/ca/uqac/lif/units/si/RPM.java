@@ -34,7 +34,7 @@ public class RPM extends AngularVelocity
 	/**
 	 * The conversion factor from the base unit.
 	 */
-	protected static final FloatingPoint s_factor = new FloatingPoint(0.10472);
+	protected static final FloatingPoint s_factor = FloatingPoint.get(0.10472);
 	
 	public RPM(DimensionValue x)
 	{

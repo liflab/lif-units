@@ -102,9 +102,11 @@ public class Whole implements Real
 		double d_x = x.doubleValue();
 		if (d_x == (int) d_x)
 		{
-			return Whole.get((int) Math.pow(m_value, d_x));
+			int new_value = (int) Math.pow(m_value, d_x);
+			return Whole.get((int) Math.pow(m_value, d_x), d_x * new_value * getRelativeUncertainty());
 		}
-		return new FloatingPoint(Math.pow(m_value, d_x));
+		double new_value = Math.pow(m_value, d_x);
+		return FloatingPoint.get(new_value, d_x * new_value * getRelativeUncertainty());
 	}
 
 	@Override
@@ -132,10 +134,18 @@ public class Whole implements Real
 	{
 		if (x instanceof Rational || x instanceof FloatingPoint)
 		{
-			return x.divide(this);
+			return x.divide(inverse());
 		}
-		int new_value = m_value / x.intValue();
-		return Whole.get(new_value, (double) new_value * (getRelativeUncertainty() + x.getRelativeUncertainty()));
+		double d_value = (double) m_value / x.doubleValue(); 
+		if (d_value == (int) d_value)
+		{
+			return Whole.get((int) d_value, d_value * (getRelativeUncertainty() + x.getRelativeUncertainty()));
+		}
+		else
+		{
+			// Quotient is not a whole number
+			return Rational.get(m_value, x.intValue(), d_value * (getRelativeUncertainty() + x.getRelativeUncertainty()));
+		}
 	}
 
 	@Override

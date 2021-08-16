@@ -51,7 +51,7 @@ public class NumberFormatter
 		final long shifted = Math.round(num*magnitude);
 		return shifted/magnitude;
 	}
-	
+
 	/**
 	 * Calculates the ceiling of a number expressed to n significant figures.
 	 * Found from <a href="http://stackoverflow.com/a/1581007">StackOverflow</a>
@@ -70,6 +70,70 @@ public class NumberFormatter
 		final double magnitude = Math.pow(10, power);
 		final long shifted = (long) Math.ceil(num*magnitude);
 		return shifted/magnitude;
+	}
+	
+	/**
+	 * Rounds a number not to exceed the precision of another number. The
+	 * precision is defined as the smallest power of 10 with a non-zero digit.
+	 * The actual value of the target number is irrelevant; only its precision
+	 * is used. Some examples:
+	 * <ul>
+	 * <li>if the number to round is 123.456 and its target number is 0.03,
+	 * the result is 123.45, since the target number has two decimals</li>
+	 * <li>if the number to round is 123.456 and its target number is 0.03258,
+	 * the result is 123.456, since the target number has five decimals and
+	 * the original number has only three</li>
+	 * <li>if the number to round is 123.456 and its target number is 50, the
+	 * result is 120, as the target number is precise up to 10²</li>
+	 * </ul> 
+	 * @param x The number to round
+	 * @param target The target number whose precision is to be matched
+	 */
+	public static double roundToPrecision(double x, double target)
+	{
+		return roundToPower(x, getPrecision(target));
+	}
+
+	/**
+	 * Gets the precision of a number. The precision is defined as the smallest
+	 * power of 10 with a non-zero digit.
+	 * @param x The number to get the precision of
+	 * @param target The exponent of the power of 10 corresponding to the
+	 * precision
+	 */
+	public static int getPrecision(double x)
+	{
+		int pow = 0;
+		if ((int) x == x)
+		{
+			while (((int) x) == x)
+			{
+				x /= 10;
+				pow++;
+			}
+			return pow - 1;
+		}
+		while (((int) x) != x)
+		{
+			x *= 10;
+			pow--;
+		}
+		return pow;
+	}
+
+	/**
+	 * Rounds a number to the specified power of 10. For example, rounding
+	 * 173.224 to 10¹ produces 170, rounding it to 10<sup>-1</sup> produces
+	 * 173.2, etc. 
+	 * @param x The number to round
+	 * @param power The power of 10 to round to
+	 * @return
+	 */
+	public static double roundToPower(double x, int power)
+	{
+		double pow = Math.pow(10, -power);
+		int v1 = (int) Math.round(x * pow);
+		return v1 / pow;
 	}
 
 	/**
