@@ -22,7 +22,9 @@ import java.util.Map;
 
 /**
  * A real number represented as a product of integer numbers elevated at some
- * integer power.
+ * integer power. Internally, an empty factoring corresponds to the value 1.
+ * A special Boolean flag is used for the value 0.
+ * 
  * @author Sylvain Hallé
  */
 public class Rational implements Real
@@ -31,17 +33,22 @@ public class Rational implements Real
 	 * The factors composing this rational number.
 	 */
 	/*@ non_null @*/ protected final Map<Integer,Integer> m_factors;
-	
+
 	/**
 	 * The uncertainty associated to this number. Can be zero or any positive
 	 * number.
 	 */
 	protected final double m_uncertainty;
-	
+
 	/**
 	 * A flag indicating if the rational is positive or negative.
 	 */
 	protected boolean m_positive;
+
+	/**
+	 * A flag indicating if the rational is null.
+	 */
+	protected boolean m_null;
 
 	/**
 	 * Gets a rational number instance out of integer numerator and
@@ -55,7 +62,7 @@ public class Rational implements Real
 	{
 		return new Rational(numerator, denominator, uncertainty);
 	}
-	
+
 	/**
 	 * Gets a rational number instance out of integer numerator and
 	 * denominator. 
@@ -67,7 +74,7 @@ public class Rational implements Real
 	{
 		return new Rational(numerator, denominator);
 	}
-	
+
 	/**
 	 * Gets a rational number instance out of a {@link double} precision
 	 * floating point number. The fraction is obtained by directly turning the
@@ -105,6 +112,7 @@ public class Rational implements Real
 		m_factors = new HashMap<Integer,Integer>();
 		m_positive = true;
 		m_uncertainty = 0;
+		m_null = false;
 	}
 
 	/**
@@ -119,12 +127,37 @@ public class Rational implements Real
 	{
 		super();
 		m_factors = new HashMap<Integer,Integer>();
-		addFactor(numerator, 1);
-		addFactor(denominator, -1);
 		m_positive = (numerator * denominator >= 0);
-		m_uncertainty = NumberFormatter.roundUpToSignificantFigures(Math.abs(uncertainty), 1);
+		if (numerator == 0)
+		{
+			m_null = true;
+			if (uncertainty == 0)
+			{
+				m_uncertainty = 0;
+			}
+			else
+			{
+				m_uncertainty = NumberFormatter.roundUpToSignificantFigures(Math.abs(uncertainty), 1);
+			}
+		}
+		else
+		{
+			m_null = false;
+			if (uncertainty == 0)
+			{
+				addFactor(numerator, 1);
+				addFactor(denominator, -1);
+				m_uncertainty = 0;
+			}
+			else
+			{
+				m_uncertainty = NumberFormatter.roundUpToSignificantFigures(Math.abs(uncertainty), 1);
+				double frac_value = NumberFormatter.roundToPrecision((double) numerator / (double) denominator, m_uncertainty);
+				factorFrom(frac_value);
+			}
+		}
 	}
-	
+
 	/**
 	 * Gets a rational number instance out of integer numerator and
 	 * denominator. 
@@ -136,7 +169,7 @@ public class Rational implements Real
 	{
 		this(numerator, denominator, 0);
 	}
-	
+
 	/**
 	 * Gets a rational number instance out of a {@link double} precision
 	 * floating point number, and specifies its uncertainty. The fraction is 
@@ -151,18 +184,16 @@ public class Rational implements Real
 	{
 		super();
 		m_factors = new HashMap<Integer,Integer>();
-		double v = x;
-		int power_10 = 0;
-		while (v != (int) v)
-		{
-			v *= 10;
-			power_10++;
-		}
-		addFactor((int) v, 1);
-		addPrimeFactor(2, -power_10);
-		addPrimeFactor(5, -power_10);
+		factorFrom(x);
 		m_positive = (x >= 0);
-		m_uncertainty = NumberFormatter.roundUpToSignificantFigures(Math.abs(uncertainty), 1);
+		if (uncertainty == 0)
+		{
+			m_uncertainty = 0;
+		}
+		else
+		{
+			m_uncertainty = NumberFormatter.roundUpToSignificantFigures(Math.abs(uncertainty), 1);
+		}
 	}
 
 	/**
@@ -175,20 +206,9 @@ public class Rational implements Real
 	 */
 	protected Rational(double x)
 	{
-		this();
-		double v = x;
-		int power_10 = 0;
-		while (v != (int) v)
-		{
-			v *= 10;
-			power_10++;
-		}
-		addFactor((int) v, 1);
-		addPrimeFactor(2, -power_10);
-		addPrimeFactor(5, -power_10);
-		m_positive = (x >= 0);
+		this(x, 0);
 	}
-	
+
 	/**
 	 * Creates a rational number out of a factored representation of another
 	 * rational.
@@ -203,7 +223,7 @@ public class Rational implements Real
 		m_positive = positive;
 		m_uncertainty = Math.abs(uncertainty);
 	}
-	
+
 	public Rational addFactor(int number, int power)
 	{
 		Map<Integer,Integer> factors = new HashMap<Integer,Integer>();
@@ -215,7 +235,7 @@ public class Rational implements Real
 		}
 		return this;
 	}
-	
+
 	protected Rational addPrimeFactor(int number, int power)
 	{
 		if (!m_factors.containsKey(number))
@@ -248,6 +268,10 @@ public class Rational implements Real
 	 */
 	public double doubleValue()
 	{
+		if (m_null)
+		{
+			return 0;
+		}
 		double x = 1;
 		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
 		{
@@ -255,7 +279,7 @@ public class Rational implements Real
 		}
 		return x;
 	}
-	
+
 	/**
 	 * Gets the factoring that corresponds to the numerator of the rational
 	 * number.
@@ -283,7 +307,10 @@ public class Rational implements Real
 	 */
 	public int getNumeratorValue()
 	{
-		boolean empty = true;
+		if (m_factors.isEmpty())
+		{
+			return 0;
+		}
 		int x = 1;
 		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
 		{
@@ -291,16 +318,11 @@ public class Rational implements Real
 			if (power > 0)
 			{
 				x *= Math.pow(e.getKey().doubleValue(), power);
-				empty = false;
 			}
-		}
-		if (empty)
-		{
-			return 0;
 		}
 		return x;
 	}
-	
+
 	/**
 	 * Gets the factoring that corresponds to the denominator of the rational
 	 * number.
@@ -350,10 +372,25 @@ public class Rational implements Real
 		{
 			out.append("(");
 		}
-		int factor = m_positive ? 1 : -1;
-		out.append(NumberFormatter.toSuperscript(factor * getNumeratorValue()));
-		out.append("/");
-		out.append(NumberFormatter.toSubscript(getDenominatorValue()));
+		if (m_null)
+		{
+			out.append(0);
+		}
+		else
+		{
+			int factor = m_positive ? 1 : -1;
+			int numerator = getNumeratorValue();
+			if (numerator == 0)
+			{
+				out.append("1");
+			}
+			else
+			{
+				out.append(NumberFormatter.toSuperscript(factor * getNumeratorValue()));
+				out.append("/");
+				out.append(NumberFormatter.toSubscript(getDenominatorValue()));
+			}
+		}
 		if (m_uncertainty > 0)
 		{
 			out.append(NumberFormatter.U_PM).append(NumberFormatter.display(m_uncertainty));
@@ -361,7 +398,7 @@ public class Rational implements Real
 		}
 		return out.toString();
 	}
-	
+
 	@Override
 	public Real pow(Real x)
 	{
@@ -387,7 +424,7 @@ public class Rational implements Real
 		}
 		return new FloatingPoint(Math.pow(doubleValue(), d_x));
 	}
-	
+
 	protected static Rational asRational(Real x)
 	{
 		Rational r_x = null;
@@ -405,7 +442,7 @@ public class Rational implements Real
 		}
 		return r_x;
 	}
-	
+
 	@Override
 	public Rational opposite()
 	{
@@ -536,6 +573,25 @@ public class Rational implements Real
 		}
 	}
 
+	protected void factorFrom(double x)
+	{
+		if (x == 0)
+		{
+			m_null = true;
+			return;
+		}
+		double v = x;
+		int power_10 = 0;
+		while (v != (int) v)
+		{
+			v *= 10;
+			power_10++;
+		}
+		addFactor((int) v, 1);
+		addPrimeFactor(2, -power_10);
+		addPrimeFactor(5, -power_10);
+	}
+
 	@Override
 	/*@ pure @*/ public double getUncertainty()
 	{
@@ -545,9 +601,13 @@ public class Rational implements Real
 	@Override
 	/*@ pure @*/ public double getRelativeUncertainty()
 	{
+		if (getNumeratorValue() == 0)
+		{
+			return 0;
+		}
 		return m_uncertainty / doubleValue();
 	}
-	
+
 	@Override
 	/*@ pure non_null @*/ public Real inverse() 
 	{

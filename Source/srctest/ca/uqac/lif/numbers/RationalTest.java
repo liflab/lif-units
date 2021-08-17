@@ -48,6 +48,26 @@ public class RationalTest
 	}
 	
 	@Test
+	public void testConstructor3()
+	{
+		Real x = Rational.get(0, 2);
+		assertEquals(0, x.intValue());
+		assertEquals(0, x.floatValue(), 0.00001);
+		assertEquals(0, x.doubleValue(), 0.00001);
+		assertEquals("0", x.toString());
+	}
+	
+	@Test
+	public void testConstructor4()
+	{
+		Real x = Rational.get(1, 1);
+		assertEquals(1, x.intValue());
+		assertEquals(1, x.floatValue(), 0.00001);
+		assertEquals(1, x.doubleValue(), 0.00001);
+		assertEquals("1", x.toString());
+	}
+	
+	@Test
 	public void testPrimeFactors1()
 	{
 		Map<Integer,Integer> factoring = new HashMap<Integer,Integer>();

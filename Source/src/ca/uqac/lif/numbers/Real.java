@@ -93,14 +93,15 @@ public interface Real
 	public int intValue();
 	
 	/**
-	 * Gets the uncertainty associated to this real number.
+	 * Gets the absolute uncertainty associated to this real number.
 	 * @return The uncertainty
 	 */
 	public double getUncertainty();
 	
 	/**
 	 * Gets the relative uncertainty associated to this real number.
-	 * @return The relative uncertainty
+	 * @return The relative uncertainty. The the value itself is 0,
+	 * the uncertainty is given as 0.
 	 */
 	public double getRelativeUncertainty();
 }

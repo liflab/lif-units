@@ -195,6 +195,10 @@ public class Whole implements Real
 	@Override
 	/*@ pure @*/ public double getRelativeUncertainty()
 	{
+		if (m_value == 0)
+		{
+			return 0;
+		}
 		return m_uncertainty / (double) m_value;
 	}
 	
