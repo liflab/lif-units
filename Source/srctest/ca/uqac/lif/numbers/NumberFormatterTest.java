@@ -18,16 +18,51 @@
 package ca.uqac.lif.numbers;
 
 import static org.junit.Assert.assertEquals;
+import static ca.uqac.lif.numbers.NumberFormatter.getMagnitude;
 import static ca.uqac.lif.numbers.NumberFormatter.getPrecision;
+import static ca.uqac.lif.numbers.NumberFormatter.printScientific;
 import static ca.uqac.lif.numbers.NumberFormatter.roundToPower;
 import static ca.uqac.lif.numbers.NumberFormatter.roundToPrecision;
 import static ca.uqac.lif.numbers.NumberFormatter.roundToSignificantFigures;
 import static ca.uqac.lif.numbers.NumberFormatter.roundUpToSignificantFigures;
+import static ca.uqac.lif.numbers.NumberFormatter.toSuperscript;
+import static ca.uqac.lif.numbers.NumberFormatter.U_PM;
+import static ca.uqac.lif.numbers.NumberFormatter.U_TIMES;
 
 import org.junit.Test;
 
 public class NumberFormatterTest 
 {
+	@Test
+	public void testGetMagnitude1()
+	{
+		assertEquals(2, getMagnitude(123.456));
+	}
+	
+	@Test
+	public void testGetMagnitude2()
+	{
+		assertEquals(0, getMagnitude(0));
+	}
+	
+	@Test
+	public void testGetMagnitude3()
+	{
+		assertEquals(2, getMagnitude(-123.456));
+	}
+	
+	@Test
+	public void testGetMagnitude4()
+	{
+		assertEquals(-2, getMagnitude(0.04));
+	}
+	
+	@Test
+	public void testGetMagnitude5()
+	{
+		assertEquals(-2, getMagnitude(-0.04));
+	}
+	
 	@Test
 	public void testSignificantFigures1()
 	{
@@ -123,4 +158,30 @@ public class NumberFormatterTest
 	{
 		assertEquals(0, roundToPrecision(123.456, 1000), 0.0001);
 	}
+	
+	/* Since printScientific() only works on the double value of a Real, we
+	 * only test it with FloatingPoints.
+	 */
+	
+	@Test
+	public void testPrintScientific1()
+	{
+		String expected = "1.24" + U_TIMES + "10" + toSuperscript(2);
+		assertEquals(expected, printScientific(FloatingPoint.get(124)));
+	}
+	
+	@Test
+	public void testPrintScientific2()
+	{
+		String expected = "1.42857" + U_TIMES + "10" + toSuperscript(-1);
+		assertEquals(expected, printScientific(FloatingPoint.get(0.142857)));
+	}
+	
+	@Test
+	public void testPrintScientific3()
+	{
+		String expected = "(143 " + U_PM + " 1) " + U_TIMES + "10" + toSuperscript(-3);
+		assertEquals(expected, printScientific(FloatingPoint.get(0.142857, 0.001)));
+	}
+	
 }

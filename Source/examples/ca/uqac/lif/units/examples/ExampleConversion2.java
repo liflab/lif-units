@@ -1,5 +1,6 @@
 package ca.uqac.lif.units.examples;
 
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.units.Length;
 import ca.uqac.lif.units.functions.UnitAdd;
 import ca.uqac.lif.units.imperial.Inch;
@@ -13,8 +14,8 @@ public class ExampleConversion2
 {
 	public static void main(String[] args) 
 	{
-		Length len1 = new Meter(1);
-		Length len2 = new Inch(6);
+		Length len1 = new Meter(Whole.get(1));
+		Length len2 = new Inch(Whole.get(6));
 		Length distance = new Centimeter(UnitAdd.get(len1, len2));
 		System.out.println(distance);
 	}

@@ -1,6 +1,9 @@
 package ca.uqac.lif.units;
 
 import java.util.TreeMap;
+
+import ca.uqac.lif.numbers.NumberFormatter;
+
 import java.util.Comparator;
 import java.util.Map;
 
@@ -125,81 +128,14 @@ public class Dimension
 		{
 			return "\u00bd"; 
 		}
-		if (x == 1)
+		else if (x == 1)
 		{
-			return ""; 
+			// No need to print exponent when it is 1
+			return "";
 		}
-		if (x == 2)
+		else if (x == (int) x)
 		{
-			return "\u00b2"; 
-		}
-		if (x == 3)
-		{
-			return "\u00b3"; 
-		}
-		if (x == 4)
-		{
-			return "\u2074"; 
-		}
-		if (x == 5)
-		{
-			return "\u2075"; 
-		}
-		if (x == 6)
-		{
-			return "\u2076"; 
-		}
-		if (x == 7)
-		{
-			return "\u2077"; 
-		}
-		if (x == 8)
-		{
-			return "\u2078"; 
-		}
-		if (x == 9)
-		{
-			return "\u2079"; 
-		}
-		if (x == -0.5)
-		{
-			return "\u207b\u00bd"; 
-		}
-		if (x == -1)
-		{
-			return "\u207b\u00b1"; 
-		}
-		if (x == 2)
-		{
-			return "\u207b\u00b2"; 
-		}
-		if (x == 3)
-		{
-			return "\u207b\u00b3"; 
-		}
-		if (x == 4)
-		{
-			return "\u207b\u2074"; 
-		}
-		if (x == 5)
-		{
-			return "\u207b\u2075"; 
-		}
-		if (x == 6)
-		{
-			return "\u207b\u2076"; 
-		}
-		if (x == 7)
-		{
-			return "\u207b\u2077"; 
-		}
-		if (x == 8)
-		{
-			return "\u207b\u2078"; 
-		}
-		if (x == 9)
-		{
-			return "\u207b\u2079"; 
+			return NumberFormatter.toSuperscript((int) x);
 		}
 		return Double.toString(x);
 	}

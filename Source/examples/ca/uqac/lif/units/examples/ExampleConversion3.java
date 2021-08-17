@@ -1,5 +1,6 @@
 package ca.uqac.lif.units.examples;
 
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.units.Length;
 import ca.uqac.lif.units.Velocity;
 import ca.uqac.lif.units.functions.UnitAdd;
@@ -14,10 +15,9 @@ public class ExampleConversion3
 {
 	public static void main(String[] args) 
 	{
-		Length len = new Meter(1);
-		Velocity vel = new MetersPerSecond(6);
+		Length len = new Meter(Whole.get(1));
+		Velocity vel = new MetersPerSecond(Whole.get(6));
 		Length distance = new Centimeter(UnitAdd.get(len, vel));
 		System.out.println(distance);
 	}
-
 }

@@ -29,6 +29,11 @@ public class Inch extends Length
 	{
 		super(x);
 	}
+	
+	public Inch(/*@ non_null @*/ Real x)
+	{
+		super(x);
+	}
 
 	@Override
 	public String toString()

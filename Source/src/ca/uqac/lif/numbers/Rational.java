@@ -344,15 +344,13 @@ public class Rational implements Real
 		{
 			out.append("(");
 		}
-		if (!m_positive)
-		{
-			out.append("-");
-		}
-		out.append(NumberFormatter.display(getNumeratorValue()));
+		int factor = m_positive ? 1 : -1;
+		out.append(NumberFormatter.toSuperscript(factor * getNumeratorValue()));
 		out.append("/");
-		out.append(NumberFormatter.display(getDenominatorValue()));
+		out.append(NumberFormatter.toSubscript(getDenominatorValue()));
 		if (m_uncertainty > 0)
 		{
+			out.append(NumberFormatter.U_PM).append(NumberFormatter.display(m_uncertainty));
 			out.append(")");
 		}
 		return out.toString();

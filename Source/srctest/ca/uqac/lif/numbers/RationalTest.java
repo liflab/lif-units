@@ -17,6 +17,7 @@
  */
 package ca.uqac.lif.numbers;
 
+import static ca.uqac.lif.numbers.NumberFormatter.printFraction;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class RationalTest
 		assertEquals(0, x.intValue());
 		assertEquals(0.5, x.floatValue(), 0.00001);
 		assertEquals(0.5, x.doubleValue(), 0.00001);
-		assertEquals("1/2", x.toString());
+		assertEquals(printFraction(1, 2), x.toString());
 	}
 	
 	@Test
@@ -43,7 +44,7 @@ public class RationalTest
 		assertEquals(0, x.intValue());
 		assertEquals(0.5, x.floatValue(), 0.00001);
 		assertEquals(0.5, x.doubleValue(), 0.00001);
-		assertEquals("1/2", x.toString());
+		assertEquals(printFraction(1, 2), x.toString());
 	}
 	
 	@Test
@@ -107,21 +108,21 @@ public class RationalTest
 	public void testSimplify1()
 	{
 		Real x = Rational.get(1, 2);
-		assertEquals("1/2", x.toString());
+		assertEquals(printFraction(1, 2), x.toString());
 	}
 	
 	@Test
 	public void testSimplify2()
 	{
 		Real x = Rational.get(3, 6);
-		assertEquals("1/2", x.toString());
+		assertEquals(printFraction(1, 2), x.toString());
 	}
 	
 	@Test
 	public void testSimplify3()
 	{
 		Real x = Rational.get(0.21875);
-		assertEquals("7/32", x.toString());
+		assertEquals(printFraction(7, 32), x.toString());
 	}
 	
 	@Test
@@ -132,7 +133,7 @@ public class RationalTest
 		Real z = x.add(y);
 		assertTrue(z instanceof Rational);
 		assertEquals(0.75, z.doubleValue(), 0.0001);
-		assertEquals("3/4", z.toString());
+		assertEquals(printFraction(3, 4), z.toString());
 	}
 	
 	@Test
@@ -143,7 +144,7 @@ public class RationalTest
 		Real z = x.add(y);
 		assertTrue(z instanceof Rational);
 		assertEquals(0.958333, z.doubleValue(), 0.0001);
-		assertEquals("23/24", z.toString());
+		assertEquals(printFraction(23, 24), z.toString());
 	}
 	
 	@Test
@@ -154,7 +155,7 @@ public class RationalTest
 		Real z = x.multiply(y);
 		assertTrue(z instanceof Rational);
 		assertEquals(0.208333, z.doubleValue(), 0.0001);
-		assertEquals("5/24", z.toString());
+		assertEquals(printFraction(5, 24), z.toString());
 	}
 	
 	@Test
@@ -165,6 +166,6 @@ public class RationalTest
 		Real z = x.divide(y);
 		assertTrue(z instanceof Rational);
 		assertEquals(0.53333, z.doubleValue(), 0.0001);
-		assertEquals("8/15", z.toString());
+		assertEquals(printFraction(8, 15), z.toString());
 	}
 }
