@@ -281,8 +281,9 @@ public class Rational implements Real
 	 * as a fraction.
 	 * @return The value of the numerator
 	 */
-	protected int getNumeratorValue()
+	public int getNumeratorValue()
 	{
+		boolean empty = true;
 		int x = 1;
 		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())
 		{
@@ -290,7 +291,12 @@ public class Rational implements Real
 			if (power > 0)
 			{
 				x *= Math.pow(e.getKey().doubleValue(), power);
+				empty = false;
 			}
+		}
+		if (empty)
+		{
+			return 0;
 		}
 		return x;
 	}
@@ -322,7 +328,7 @@ public class Rational implements Real
 	 * is 3<sup>1</sup>&times;5<sup>2</sup> = 75.
 	 * @return The value of the denominator
 	 */
-	protected int getDenominatorValue()
+	public int getDenominatorValue()
 	{
 		int x = 1;
 		for (Map.Entry<Integer,Integer> e : m_factors.entrySet())

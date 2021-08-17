@@ -25,7 +25,7 @@ import ca.uqac.lif.units.si.Meter;
 
 /**
  * Unit of length of the Imperial Unit system, derived from the meter. An
- * inch is exactly 0.0254 meter.
+ * inch is exactly 0.0254 meter, or 127/5000.
  * 
  * @author Sylvain Hallé
  *
@@ -35,7 +35,7 @@ public class Inch extends Length
 	/**
 	 * The conversion factor from the base unit.
 	 */
-	protected static final Rational s_factor = Rational.get(0.0254);
+	protected static final Real s_factor = Rational.get(127, 5000);
 	
 	public Inch(double d)
 	{

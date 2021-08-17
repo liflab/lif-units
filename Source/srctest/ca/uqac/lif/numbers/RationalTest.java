@@ -148,6 +148,16 @@ public class RationalTest
 	}
 	
 	@Test
+	public void testAdd3()
+	{
+		Real x = Rational.get(127, 5000);
+		Real y = Rational.get(127, 10000);
+		Real z = x.add(y);
+		assertTrue(z instanceof Rational);
+		assertEquals(printFraction(381, 10000), z.toString());
+	}
+	
+	@Test
 	public void testMultiply1()
 	{
 		Real x = Rational.get(1, 3);

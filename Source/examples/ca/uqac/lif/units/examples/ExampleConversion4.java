@@ -1,5 +1,6 @@
 package ca.uqac.lif.units.examples;
 
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.units.Length;
 import ca.uqac.lif.units.Time;
 import ca.uqac.lif.units.Velocity;
@@ -15,8 +16,8 @@ public class ExampleConversion4
 {
 	public static void main(String[] args)
 	{
-		Time duration = new Second(45);
-		Velocity speed = new KilometersPerHour(3);
+		Time duration = new Second(Whole.get(45));
+		Velocity speed = new KilometersPerHour(Whole.get(3));
 		Length distance = new Foot(UnitMultiply.get(duration, speed));
 		System.out.println(distance);
 	}

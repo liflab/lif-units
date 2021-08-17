@@ -17,52 +17,53 @@
  */
 package ca.uqac.lif.units.si;
 
-import ca.uqac.lif.numbers.Rational;
 import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.units.DimensionValue;
-import ca.uqac.lif.units.Velocity;
+import ca.uqac.lif.units.Length;
 
 /**
- * A speed value derived from {@link MetersPerSecond}. One kilometer per hour
- * is 5/18 m/s.
- * 
+ * Unit of length derived from the meter. There are 1000 millimeters in a
+ * meter.
  * @author Sylvain Hallé
- *
  */
-public class KilometersPerHour extends Velocity
+public class Millimeter extends Length
 {
-	protected static final Rational s_factor = Rational.get(5, 18);
+	/**
+	 * The conversion factor from the base unit.
+	 */
+	protected static final Whole s_factor = Whole.get(1000);
 	
-	public KilometersPerHour(DimensionValue x)
+	public Millimeter(double d)
+	{
+		super(d);
+	}
+	
+	public Millimeter(DimensionValue x) 
 	{
 		super(x);
 	}
 	
-	public KilometersPerHour(double x)
+	public Millimeter(Real x) 
 	{
 		super(x);
 	}
-	
-	public KilometersPerHour(Real x)
-	{
-		super(x);
-	}
-	
-	@Override
-	protected Real fromBaseUnit(Real x)
-	{
-		return x.divide(s_factor);
-	}
-	
+
 	@Override
 	public String toString()
 	{
-		return m_value + " km/h";
+		return m_value + " mm";
+	}
+	
+	@Override
+	protected Real fromBaseUnit(Real x) 
+	{
+		return x.multiply(s_factor);
 	}
 
 	@Override
 	public DimensionValue asBaseUnit() 
 	{
-		return new MetersPerSecond(m_value.multiply(s_factor));
+		return new Meter(m_value.divide(s_factor));
 	}
 }

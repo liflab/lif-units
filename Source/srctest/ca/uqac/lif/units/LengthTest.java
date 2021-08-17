@@ -17,15 +17,19 @@
  */
 package ca.uqac.lif.units;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ca.uqac.lif.numbers.Rational;
+import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.units.IncompatibleDimensions;
 import ca.uqac.lif.units.imperial.Inch;
 import ca.uqac.lif.units.si.Centimeter;
 import ca.uqac.lif.units.si.Kilogram;
 import ca.uqac.lif.units.si.Meter;
+import ca.uqac.lif.units.si.Millimeter;
 
 public class LengthTest 
 {
@@ -58,5 +62,27 @@ public class LengthTest
 		Meter m = new Meter(0.254);
 		Centimeter c = new Centimeter(m);
 		assertEquals(25.4, c.get().doubleValue(), 0.0001);
+	}
+	
+	@Test
+	public void testConversion5()
+	{
+		Inch i = new Inch(Whole.get(1));
+		DimensionValue v = i.asBaseUnit();
+		Real r = v.get();
+		assertTrue(r instanceof Rational);
+		assertEquals(((Rational) r).getNumeratorValue(), 127);
+		assertEquals(((Rational) r).getDenominatorValue(), 5000);
+	}
+	
+	@Test
+	public void testConversion6()
+	{
+		Millimeter i = new Millimeter(Rational.get(12.7));
+		DimensionValue v = i.asBaseUnit();
+		Real r = v.get();
+		assertTrue(r instanceof Rational);
+		assertEquals(((Rational) r).getNumeratorValue(), 127);
+		assertEquals(((Rational) r).getDenominatorValue(), 10000);
 	}
 }
