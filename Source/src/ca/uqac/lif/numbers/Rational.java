@@ -393,7 +393,7 @@ public class Rational implements Real
 		}
 		if (m_uncertainty > 0)
 		{
-			out.append(NumberFormatter.U_PM).append(NumberFormatter.display(m_uncertainty));
+			out.append(" ").append(NumberFormatter.U_PM).append(" ").append(asRational(m_uncertainty));
 			out.append(")");
 		}
 		return out.toString();
@@ -441,6 +441,11 @@ public class Rational implements Real
 			throw new UnsupportedOperationException("Cannot turn this number into a rational");
 		}
 		return r_x;
+	}
+	
+	protected static Rational asRational(double x)
+	{
+		return new Rational(x);
 	}
 
 	@Override

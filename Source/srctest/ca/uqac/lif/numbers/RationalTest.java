@@ -18,6 +18,7 @@
 package ca.uqac.lif.numbers;
 
 import static ca.uqac.lif.numbers.NumberFormatter.printFraction;
+import static ca.uqac.lif.numbers.NumberFormatter.U_PM;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
@@ -65,6 +66,17 @@ public class RationalTest
 		assertEquals(1, x.floatValue(), 0.00001);
 		assertEquals(1, x.doubleValue(), 0.00001);
 		assertEquals("1", x.toString());
+	}
+	
+	@Test
+	public void testConstructor5()
+	{
+		Real x = Rational.get(1, 4, 0.1);
+		assertEquals(0, x.intValue());
+		assertEquals(.3, x.floatValue(), 0.00001);
+		assertEquals(.3, x.doubleValue(), 0.00001);
+		String expected = "(" + printFraction(3, 10) + " " + U_PM + " " + printFraction(1, 10) + ")";
+		assertEquals(expected, x.toString());
 	}
 	
 	@Test
