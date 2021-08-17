@@ -424,7 +424,7 @@ public class Rational implements Real
 		int b = getDenominatorValue();
 		int c = r_x.getNumeratorValue();
 		int d = r_x.getDenominatorValue();
-		return Rational.get(a * d + b * c, b * d);
+		return Rational.get(a * d + b * c, b * d, getUncertainty() + x.getUncertainty());
 	}
 
 	@Override
@@ -439,7 +439,7 @@ public class Rational implements Real
 		int b = getDenominatorValue();
 		int c = r_x.getNumeratorValue();
 		int d = r_x.getDenominatorValue();
-		return Rational.get(a * d - b * c, b * d);
+		return Rational.get(a * d - b * c, b * d, getUncertainty() + x.getUncertainty());
 	}
 
 	@Override
@@ -459,7 +459,9 @@ public class Rational implements Real
 		{
 			new_r.addPrimeFactor(e.getKey(), -e.getValue());
 		}
-		return new_r;
+		double new_value = new_r.doubleValue();
+		double new_uncertainty = new_value * getRelativeUncertainty() * x.getRelativeUncertainty();
+		return new Rational(new_r.m_factors, new_value >= 0, new_uncertainty);
 	}
 
 	@Override
@@ -479,7 +481,9 @@ public class Rational implements Real
 		{
 			new_r.addPrimeFactor(e.getKey(), e.getValue());
 		}
-		return new_r;
+		double new_value = new_r.doubleValue();
+		double new_uncertainty = new_value * getRelativeUncertainty() * x.getRelativeUncertainty();
+		return new Rational(new_r.m_factors, new_value >= 0, new_uncertainty);
 	}
 
 	@Override
