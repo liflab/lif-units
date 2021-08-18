@@ -21,15 +21,26 @@ which prints: **(40 ± 5) × 10⁻² m/s²**.
 You can also manipulate quantities symbolically: ¹/₄" + ¹⁰/₃ mm = ⁵⁸¹/₁₅₂₄"
 --no floating point conversion.
 
+Motivation
+----------
+
+In a 2012 paper published in *IEEE Computer* [1], Bjarne Stroustrup observed
+that "no mainstream programming language supports [measurement] units"; he
+evoked the possibility of a language where quantities would carry the units
+they are expressed in, and where operations on numbers would be mindful of
+their associated units. This could avoid incidents such as the 1999 loss of the
+NASA probe Mars Climate Orbiter, where a piece of code mistakenly mixed
+metric and English units [2].
+
 Features
---------
+-------
 
 *lif-units* is a Java library that serves three purposes:
 
 1. Allow arithmetic operations on integers, rational numbers and floating point
    numbers to be performed at the highest **symbolic** level possible, avoiding
    unnecessary conversions to floating-point representations and providing
-   more intuitive representation of rational values (e.g. ³/₃₅ instead of
+   more intuitive representations of rational values (e.g. ³/₃₅ instead of
    0.085714286...).
 2. Provide means to optionally associate **uncertainty** to numerical
    measurements, and appropriately propagate uncertainty to values derived from
@@ -51,7 +62,7 @@ double a = 1, b = 0.75;
 double c = a + b; // c = 1.75
 ```
 
-which producs the incorrect result if `a` is a length in centimeters and `b`
+which produces the incorrect result if `a` is a length in centimeters and `b`
 is in inches, you write:
 
 ```java
@@ -195,7 +206,7 @@ Real x = FloatingPoint.get(314.16, 0.1);
 System.out.println(NumberFormatter.printScientific(x));
 ```
 
-will produce (3.142 ± 1) × 10².
+will produce (3.142 ± 0.001) × 10².
 
 Compiling and Installing the Library
 ------------------------------------
@@ -246,3 +257,12 @@ About the author
 
 Azrael was written by [Sylvain Hallé](https://leduotang.ca/sylvain), Full 
 Professor at [Université du Québec à Chicoutimi](https://www.uqac.ca), Canada.
+
+References
+----------
+
+[1] B. Stroustrup. Software Development for Infrastructure. (2012).
+*IEEE Computer*, 45(1), p. 47-58. DOI: 10.1109/MC.2011.353
+
+[2] NASA (1999). Mars Climate Orbiter Mishap Investigation Board Phase I 
+Report, NASA, ftp://ftp.hq.nasa.gov/pub/pao/reports/1999/MCO_report.pdf.
