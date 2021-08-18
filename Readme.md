@@ -1,8 +1,45 @@
 Manipulate measurements with units and uncertainty
 ==================================================
 
+In a nutshell: this Java library allows you to perform calculations such as this:
+
+((50 ± 2) km/h + (10.5 ± 0.5 m/s)) ÷ 1 min = ?
+
+The code you need looks like this:
+
+```java
+DimensionValue v = Unit.divide(
+  Unit.add(
+    new KilometersPerHour(FloatingPoint.get(50, 2)),
+    new MetersPerSecond(FloatingPoint.get(10.5, 0.5))),
+  new Minute(1));
+System.out.println(NumberFormatter.printScientific(v.get()));
+```
+
+which prints: **(40 ± 5) × 10⁻² m/s²**.
+
+You can also manipulate quantities symbolically: ¹/₄" + ¹⁰/₃ mm = ⁵⁸¹/₁₅₂₄"
+--no floating point conversion.
+
 Features
 --------
+
+*lif-units* is a Java library that serves three purposes:
+
+1. Allow arithmetic operations on integers, rational numbers and floating point
+   numbers to be performed at the highest **symbolic** level possible, avoiding
+   unnecessary conversions to floating-point representations and providing
+   more intuitive representation of rational values (e.g. ³/₃₅ instead of
+   0.085714286...).
+2. Provide means to optionally associate **uncertainty** to numerical
+   measurements, and appropriately propagate uncertainty to values derived from
+   arithmetical operations on uncertain values.
+3. Represent numerical measurements in dimensional **units**, and correctly
+   convert values of different units when combined together. Operations on
+   incompatible units (e.g. adding meters to radians) are forbidden by the
+   library and throw an exception.
+
+Below are listed some of the distinctive features of the library.
 
 ### Apply arithmetic operations on quantities with different units
 
@@ -101,7 +138,7 @@ exponentiation.
 To avoid rounding errors possibly incurred by the use of floating point
 numbers, the library also allows you to define measurement as rational
 numbers, using a class called `Rational`. The following piece of code creates a
-duration of exactly 1/60th of an hour:
+duration of exactly ¹/₆₀ of an hour:
 
 ```java
 Time h = new Hour(Rational.get(1, 60));
@@ -113,7 +150,7 @@ The duration is indeed displayed as such:
 System.out.println(h);
 ```
 
-produces `1/60 h`.
+produces `¹/₆₀ h`.
 
 When a value is created using rationals, all arithmetic operations on values
 are done *symbolically*, and not through floating-point conversions. Thus:
@@ -124,7 +161,7 @@ Time h3 = Unit.add(h1, h2);
 System.out.println(h3);
 ```
 
-yields `67/540 h`, as expected. The actual decimal value can be obtained in
+yields `⁶⁷/₅₄₀ h`, as expected. The actual decimal value can be obtained in
 various ways:
 
 ```java
@@ -138,10 +175,74 @@ Uncertainty on rationals is handled exactly as for decimal numbers. Hence:
 Length x = new Meter(Rational.get(1, 3, 0.1));
 ``` 
 
-will actually end up with a value of (3/10 ± 1/10) m, and **not**
-(1/3 ± 1/10) m, since 1/3 has been truncated to the fraction matching the
+will actually end up with a value of (³/₁₀ ± ¹/₁₀) m, and **not**
+(¹/₃ ± ¹/₁₀) m, since ¹/₃ has been truncated to the fraction matching the
 precision of the associated uncertainty.
 
 ### Pretty-print measurements in various formats
 
+The library heavily relies on [Unicode](https://en.wikipedia.org/wiki/Unicode)
+for the display of mathematical symbols in an eye-pleasing way. As you have
+seen above, fractions are printed using UTF-8 characters for subscript and
+superscript numbers (hence `¹/₁₀` and not `1/10`), and the same applies for the few
+other special characters (such as `±` instead of the ugly `+/-`).
 
+It is also possible to print any numerical value using
+[scientific notation](https://en.wikipedia.org/wiki/Scientific_notation):
+
+```java
+Real x = FloatingPoint.get(314.16, 0.1);
+System.out.println(NumberFormatter.printScientific(x));
+```
+
+will produce (3.142 ± 1) × 10².
+
+Compiling and Installing the Library
+------------------------------------
+
+First make sure you have the following installed:
+
+- The Java Development Kit (JDK) to compile. Bullwinkle was developed and
+  tested on version 11 of the JDK, but it is probably safe to use any
+  later version.
+- [Ant](http://ant.apache.org) to automate the compilation and build process
+
+Download the sources for the library from
+[GitHub](http://github.com/liflab/lif-units) or clone the repository
+using Git:
+
+    git clone git@github.com:liflab/lif-units.git
+
+### Compiling
+
+Compile the sources by simply typing:
+
+    ant
+
+This will produce a file called `lif-units.jar` in the folder. This
+file is runnable and stand-alone, or can be used as a library, so it can be
+moved around to the location of your choice.
+
+In addition, the script generates in the `doc` folder the Javadoc
+documentation for using the library. This documentation is also embedded in
+the JAR file. To show documentation in Eclipse, right-click on the jar,
+click "Properties", then fill the Javadoc location (which is the JAR
+itself).
+
+### Testing
+
+The library can test itself by running:
+
+    ant test
+
+Unit tests are run with [jUnit](http://junit.org); a detailed report of
+these tests in HTML format is availble in the folder `tests/junit`, which
+is automatically created. Code coverage is also computed with
+[JaCoCo](http://www.eclemma.org/jacoco/); a detailed report is available
+in the folder `tests/coverage`.
+
+About the author
+----------------
+
+Azrael was written by [Sylvain Hallé](https://leduotang.ca/sylvain), Full 
+Professor at [Université du Québec à Chicoutimi](https://www.uqac.ca), Canada.

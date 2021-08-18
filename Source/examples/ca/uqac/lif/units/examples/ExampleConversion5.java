@@ -14,7 +14,7 @@ public class ExampleConversion5
 	public static void main(String[] args) 
 	{
 		Length len1 = new Inch(Rational.get(0.25));
-		Length len2 = new Millimeter(Rational.get(12.7));
+		Length len2 = new Millimeter(Rational.get(10, 3));
 		Length distance = new Inch(UnitAdd.get(len1, len2));
 		System.out.println(distance);
 	}

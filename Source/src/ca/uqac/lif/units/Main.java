@@ -17,37 +17,23 @@
  */
 package ca.uqac.lif.units;
 
-import ca.uqac.lif.numbers.Real;
-
 /**
- * A speed value.
- * @author Sylvain Hallé
+ * A dummy class with a main method to indicate that the library is not meant
+ * to be run from the command line.
  */
-public abstract class Velocity extends DimensionValue
+public class Main 
 {
-	/**
-	 * The dimension of the time value (i.e. <i>length</i><sup>1</sup> &sdot; <i>time</i><sup>-1</sup>).
-	 */
-	public static final Dimension DIMENSION = new Dimension().add(Quantity.LENGTH, 1).add(Quantity.TIME, -1);
-
-	public Velocity(DimensionValue x) 
+	public static final String s_versionString = "0.1";
+	
+	private Main()
 	{
-		super(x);
+		super();
 	}
 	
-	public Velocity(Real x) 
+	public static void main(String[] args) 
 	{
-		super(x);
-	}
-	
-	public Velocity(double x) 
-	{
-		super(x);
-	}
-	
-	@Override
-	public Dimension getDimension()
-	{
-		return DIMENSION;
+		System.out.println("lif-units v" + s_versionString);
+		System.out.println("(C) 2021 Laboratoire d'informatique formelle\nUniversité du Québec à Chicoutimi, Canada");
+		System.out.println("This library is not meant to be run from the command line.");
 	}
 }
