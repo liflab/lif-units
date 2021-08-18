@@ -29,26 +29,46 @@ that "no mainstream programming language supports [measurement] units"; he
 evoked the possibility of a language where quantities would carry the units
 they are expressed in, and where operations on numbers would be mindful of
 their associated units. This could avoid incidents such as the 1999 loss of the
-NASA probe Mars Climate Orbiter, where a piece of code mistakenly mixed
+NASA probe Mars Climate Orbiter, caused by a piece of code mistakenly mixing
 metric and English units [2].
 
+Even better would be to also acknowledge that many of the quantities we
+manipulate are subject to uncertainty: we don't measure 10 meters, but 10 ± 1
+meters. There do exist rules stipulating how uncertainty propagates when adding
+or multiplying such values, but handling them in a program is tedious and must
+be done by hand --most often by adding extra variables and making sure their
+values are correctly computed. Properly displaying such values, by taking care
+of precision, order of magnitude and significant digits, requires yet an extra
+layer of work.
+
 Features
--------
+--------
 
-*lif-units* is a Java library that serves three purposes:
+This *lif-units* library addresses these issues. It has been designed with three
+objectives:
 
-1. Allow arithmetic operations on integers, rational numbers and floating point
+1. Represent numerical measurements in dimensional **units**, and correctly
+   convert values of different units when combined together. Operations on
+   incompatible units (e.g. adding meters to radians) are forbidden by the
+   library and throw an exception.
+2. Provide means to optionally associate **uncertainty** to numerical
+   measurements, and appropriately propagate uncertainty to values derived from
+   arithmetical operations on uncertain values.
+3. Allow arithmetic operations on integers, rational numbers and floating point
    numbers to be performed at the highest **symbolic** level possible, avoiding
    unnecessary conversions to floating-point representations and providing
    more intuitive representations of rational values (e.g. ³/₃₅ instead of
    0.085714286...).
-2. Provide means to optionally associate **uncertainty** to numerical
-   measurements, and appropriately propagate uncertainty to values derived from
-   arithmetical operations on uncertain values.
-3. Represent numerical measurements in dimensional **units**, and correctly
-   convert values of different units when combined together. Operations on
-   incompatible units (e.g. adding meters to radians) are forbidden by the
-   library and throw an exception.
+
+To this end, the library implements the conventions for uncertainty and
+significant digits from the following manual (a reference textbook in Québec
+for experimental sciences, at the time when the author of this library was a
+college student):
+
+- G. Boisclair, J. Pagé. (1992). *Guide des sciences expérimentales.* Éditions
+  du renouveau pédagogique, ISBN 2-7613-0676-7.
+
+(The fourth edition of this book is [still in print](https://www.pearsonerpi.com/fr/collegial-universitaire/laboratoire/guide-des-sciences-experimentales-4e-ed-version-numerique-24-mois-a36425).)
 
 Below are listed some of the distinctive features of the library.
 
@@ -63,7 +83,7 @@ double c = a + b; // c = 1.75
 ```
 
 which produces the incorrect result if `a` is a length in centimeters and `b`
-is in inches, you write:
+is in inches (hello, Mars Climate Orbiter), you rather write:
 
 ```java
 Length a = new Centimeter(1), b = new Inch(0.75);
@@ -71,12 +91,14 @@ Length c = Unit.add(a, b); // c = 2.905 cm
 ```
 
 The library takes care of converting inches to centimeters before performing
-the addition.
+the addition. The unit of the result defaults to that of the first operand, but
+you can also convert it --see below.
 
 ### Convert between units
 
 A by-product of this behavior is that a value in some unit can be converted
-to another unit of the same dimension:
+to another unit of the same dimension, by passing it to the constructor of the
+target unit:
 
 ```java
 Temperature t1 = new Fahrenheit(32);
@@ -152,13 +174,13 @@ numbers, using a class called `Rational`. The following piece of code creates a
 duration of exactly ¹/₆₀ of an hour:
 
 ```java
-Time h = new Hour(Rational.get(1, 60));
+Time h1 = new Hour(Rational.get(1, 60));
 ```
 
 The duration is indeed displayed as such:
 
 ```java
-System.out.println(h);
+System.out.println(h1);
 ```
 
 produces `¹/₆₀ h`.
