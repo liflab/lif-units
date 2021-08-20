@@ -24,25 +24,25 @@ import ca.uqac.lif.units.Velocity;
 import ca.uqac.lif.units.si.MetersPerSecond;
 
 /**
- * A speed value derived from {@link MetersPerSecond}. One mile per hour
- * is <em>exactly</em> 1397/3125 meters per second.
+ * A speed value derived from {@link MetersPerSecond}. One foot per second
+ * is <em>exactly</em> 381/1250 meters per second.
  * 
  * @author Sylvain Hallé
  *
  */
-public class MilesPerHour extends Velocity
+public class FeetPerSecond extends Velocity
 {
 	/**
 	 * The conversion factor from the base unit.
 	 */
-	protected static final Rational s_factor = Rational.get(1397, 3125);
+	protected static final Rational s_factor = Rational.get(381, 1250);
 	
-	public MilesPerHour(DimensionValue x)
+	public FeetPerSecond(DimensionValue x)
 	{
 		super(x);
 	}
 	
-	public MilesPerHour(double x)
+	public FeetPerSecond(double x)
 	{
 		super(x);
 	}
@@ -56,7 +56,7 @@ public class MilesPerHour extends Velocity
 	@Override
 	public String toString()
 	{
-		return m_value + " MPH";
+		return m_value + " ft/s";
 	}
 	
 	@Override

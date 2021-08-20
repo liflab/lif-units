@@ -20,48 +20,48 @@ package ca.uqac.lif.units.imperial;
 import ca.uqac.lif.numbers.Rational;
 import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.units.DimensionValue;
-import ca.uqac.lif.units.Velocity;
-import ca.uqac.lif.units.si.MetersPerSecond;
+import ca.uqac.lif.units.Length;
+import ca.uqac.lif.units.si.Meter;
 
 /**
- * A speed value derived from {@link MetersPerSecond}. One mile per hour
- * is <em>exactly</em> 1397/3125 meters per second.
+ * Unit of length of the Imperial Unit system, derived from the meter. A
+ * mile is exactly 1609.344 meter, or 201168/125 m.
  * 
  * @author Sylvain Hallé
  *
  */
-public class MilesPerHour extends Velocity
+public class Mile extends Length
 {
 	/**
 	 * The conversion factor from the base unit.
 	 */
-	protected static final Rational s_factor = Rational.get(1397, 3125);
+	protected static final Rational s_factor = Rational.get(201168, 125);
 	
-	public MilesPerHour(DimensionValue x)
+	public Mile(double x)
 	{
 		super(x);
 	}
 	
-	public MilesPerHour(double x)
+	public Mile(DimensionValue d)
 	{
-		super(x);
-	}
-	
-	@Override
-	protected Real fromBaseUnit(Real x) 
-	{
-		return x.divide(s_factor);
+		super(d);
 	}
 	
 	@Override
 	public String toString()
 	{
-		return m_value + " MPH";
+		return m_value + " mi";
+	}
+	
+	@Override
+	protected Real fromBaseUnit(Real x)
+	{
+		return x.divide(s_factor);
 	}
 	
 	@Override
 	public DimensionValue asBaseUnit()
 	{
-		return new MetersPerSecond(m_value.multiply(s_factor));
+		return new Meter(m_value.multiply(s_factor));
 	}
 }

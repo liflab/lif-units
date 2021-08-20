@@ -15,26 +15,53 @@
   See the License for the specific language governing permissions and
   limitations under the License.
  */
-package ca.uqac.lif.units.examples;
+package ca.uqac.lif.units.other;
 
+import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.numbers.Whole;
+import ca.uqac.lif.units.DimensionValue;
 import ca.uqac.lif.units.Length;
-import ca.uqac.lif.units.Velocity;
-import ca.uqac.lif.units.functions.UnitAdd;
-import ca.uqac.lif.units.si.Centimeter;
 import ca.uqac.lif.units.si.Meter;
-import ca.uqac.lif.units.si.MetersPerSecond;
 
 /**
- * You cannot add a length and a speed: these dimensions are incompatible.
+ * Unit of length of the Imperial Unit system, derived from the meter. A
+ * nautical mile is exactly 1852 m.
+ * 
+ * @author Sylvain Hallé
+ *
  */
-public class ExampleConversion3 
+public class NauticalMile extends Length
 {
-	public static void main(String[] args) 
+	/**
+	 * The conversion factor from the base unit.
+	 */
+	protected static final Whole s_factor = Whole.get(1852);
+	
+	public NauticalMile(double x)
 	{
-		Length len = new Meter(Whole.get(1));
-		Velocity vel = new MetersPerSecond(Whole.get(6));
-		Length distance = new Centimeter(UnitAdd.get(len, vel));
-		System.out.println(distance);
+		super(x);
+	}
+	
+	public NauticalMile(DimensionValue d)
+	{
+		super(d);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return m_value + " NM";
+	}
+	
+	@Override
+	protected Real fromBaseUnit(Real x)
+	{
+		return x.divide(s_factor);
+	}
+	
+	@Override
+	public DimensionValue asBaseUnit()
+	{
+		return new Meter(m_value.multiply(s_factor));
 	}
 }

@@ -17,24 +17,38 @@
  */
 package ca.uqac.lif.units.examples;
 
-import ca.uqac.lif.numbers.Whole;
-import ca.uqac.lif.units.Length;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import ca.uqac.lif.units.Velocity;
-import ca.uqac.lif.units.functions.UnitAdd;
-import ca.uqac.lif.units.si.Centimeter;
-import ca.uqac.lif.units.si.Meter;
+import ca.uqac.lif.units.imperial.FeetPerSecond;
+import ca.uqac.lif.units.imperial.MilesPerHour;
+import ca.uqac.lif.units.other.Knot;
+import ca.uqac.lif.units.si.KilometersPerHour;
 import ca.uqac.lif.units.si.MetersPerSecond;
 
 /**
- * You cannot add a length and a speed: these dimensions are incompatible.
+ * Order these velocities from slowest to fastest:
+ * <ul>
+ * <li>50 MPH</li>
+ * <li>20 m/s</li>
+ * <li>30 kts</li>
+ * <li>80 km/h</li>
+ * <li>60 ft/s</li>
+ * </ul>
  */
-public class ExampleConversion3 
+public class ExampleConversion7 
 {
 	public static void main(String[] args) 
 	{
-		Length len = new Meter(Whole.get(1));
-		Velocity vel = new MetersPerSecond(Whole.get(6));
-		Length distance = new Centimeter(UnitAdd.get(len, vel));
-		System.out.println(distance);
+		List<Velocity> velocities = new ArrayList<Velocity>();
+		velocities.add(new MilesPerHour(50));
+		velocities.add(new MetersPerSecond(20));
+		velocities.add(new Knot(30));
+		velocities.add(new KilometersPerHour(80));
+		velocities.add(new FeetPerSecond(60));
+		Collections.sort(velocities);
+		System.out.println(velocities);
 	}
 }

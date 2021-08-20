@@ -15,7 +15,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
  */
-package ca.uqac.lif.units.imperial;
+package ca.uqac.lif.units.other;
 
 import ca.uqac.lif.numbers.Rational;
 import ca.uqac.lif.numbers.Real;
@@ -24,25 +24,25 @@ import ca.uqac.lif.units.Velocity;
 import ca.uqac.lif.units.si.MetersPerSecond;
 
 /**
- * A speed value derived from {@link MetersPerSecond}. One mile per hour
- * is <em>exactly</em> 1397/3125 meters per second.
+ * A speed value derived from {@link MetersPerSecond}. One knot
+ * is <em>exactly</em> 463/900 meters per second.
  * 
  * @author Sylvain Hallé
  *
  */
-public class MilesPerHour extends Velocity
+public class Knot extends Velocity
 {
 	/**
 	 * The conversion factor from the base unit.
 	 */
-	protected static final Rational s_factor = Rational.get(1397, 3125);
+	protected static final Rational s_factor = Rational.get(463, 900);
 	
-	public MilesPerHour(DimensionValue x)
+	public Knot(DimensionValue x)
 	{
 		super(x);
 	}
 	
-	public MilesPerHour(double x)
+	public Knot(double x)
 	{
 		super(x);
 	}
@@ -56,7 +56,7 @@ public class MilesPerHour extends Velocity
 	@Override
 	public String toString()
 	{
-		return m_value + " MPH";
+		return m_value + " kt";
 	}
 	
 	@Override

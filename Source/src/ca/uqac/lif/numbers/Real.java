@@ -23,7 +23,7 @@ package ca.uqac.lif.numbers;
  * 
  * @author Sylvain Hallé
  */
-public interface Real 
+public interface Real extends Comparable<Real>
 {
 	/**
 	 * Adds a real number to another real number.

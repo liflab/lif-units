@@ -244,4 +244,20 @@ public class Whole implements Real
 		}
 		return Rational.get(1, 1).divide(this);
 	}
+
+	@Override
+	public int compareTo(Real x) 
+	{
+		double v1 = doubleValue();
+		double v2 = x.doubleValue();
+		if (v1 == v2)
+		{
+			return 0;
+		}
+		if (v1 < v2)
+		{
+			return -1;
+		}
+		return 1;
+	}
 }

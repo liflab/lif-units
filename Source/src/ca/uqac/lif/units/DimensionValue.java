@@ -28,7 +28,7 @@ import ca.uqac.lif.numbers.Real;
  * @author Sylvain Hallé
  *
  */
-public abstract class DimensionValue
+public abstract class DimensionValue implements Comparable<DimensionValue>
 {
 	/**
 	 * The value in "native" units.
@@ -156,6 +156,12 @@ public abstract class DimensionValue
 		{
 			throw new NoSuchUnitException(e);
 		}
+	}
+	
+	@Override
+	public int compareTo(DimensionValue x)
+	{
+		return asBaseUnit().get().compareTo(x.asBaseUnit().get());
 	}
 	
 	/**

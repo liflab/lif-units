@@ -108,6 +108,19 @@ Velocity v1 = new KilometersPerHour(60);
 Velocity v2 = new MPH(v1); // v2 = 37.28227 MPH
 ```
 
+Values in different units can also be compared:
+
+```java
+List<Velocity> velocities = new ArrayList<Velocity>();
+velocities.add(new MetersPerSecond(20));
+velocities.add(new MilesPerHour(50));
+velocities.add(new Knot(30));
+Arrays.sort(velocities);
+```
+
+will result in an array where velocities are sorted from slowest to fastest
+(here 30 kt, 20 m/s, 50 MPH).
+
 ### Enforce sound dimensional analysis
 
 Every unitary value in the library (even the ones you create yourself) is
