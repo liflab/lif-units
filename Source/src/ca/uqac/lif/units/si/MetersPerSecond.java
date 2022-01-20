@@ -39,9 +39,9 @@ public class MetersPerSecond extends Velocity
 	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " m/s";
+		return "m/s";
 	}
 	
 	@Override

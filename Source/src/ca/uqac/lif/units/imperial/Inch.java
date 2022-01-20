@@ -51,11 +51,21 @@ public class Inch extends Length
 	{
 		super(x);
 	}
+	
+	@Override
+	public String getUnitName()
+	{
+		return "\"";
+	}
 
 	@Override
 	public String toString()
 	{
-		return m_value + "\"";
+		if (m_value.getUncertainty() == 0)
+		{
+			return m_value + "\"";
+		}
+		return "(" + m_value + ")\"";
 	}
 	
 	@Override

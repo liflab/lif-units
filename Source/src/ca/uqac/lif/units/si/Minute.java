@@ -45,9 +45,9 @@ public class Minute extends Time
 	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " min";
+		return "min";
 	}
 	
 	@Override

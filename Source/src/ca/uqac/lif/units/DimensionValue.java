@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import ca.uqac.lif.numbers.FloatingPoint;
 import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.Whole;
 
 /**
  * A scalar number accompanied by a dimension.
@@ -39,7 +40,7 @@ public abstract class DimensionValue implements Comparable<DimensionValue>
 	 * Creates a new dimension value from a scalar number.
 	 * @param d The scalar value in the native units of the class
 	 */
-	public DimensionValue(double d)
+	protected DimensionValue(double d)
 	{
 		super();
 		m_value = FloatingPoint.get(d);
@@ -83,6 +84,27 @@ public abstract class DimensionValue implements Comparable<DimensionValue>
 		return m_value;
 	}
 	
+	@Override
+	public String toString()
+	{
+		String unit_name = getUnitName();
+		if (unit_name == null || unit_name.isEmpty())
+		{
+			return m_value.toString();
+		}
+		if (m_value.getUncertainty() == 0)
+		{
+			return m_value + " " + getUnitName();
+		}
+		return "(" + m_value + ") " + getUnitName();
+	}
+	
+	/**
+	 * Gets the name of the unit in which the dimension value is expressed.
+	 * @return The string corresponding to the name of the unit
+	 */
+	/*@ non_null @*/ public abstract String getUnitName();
+	
 	/**
 	 * Converts the value into another one expressed in the base units for each
 	 * of its dimensions.
@@ -121,6 +143,20 @@ public abstract class DimensionValue implements Comparable<DimensionValue>
 		catch (InvocationTargetException e) 
 		{
 			throw new NoSuchUnitException(e);
+		}
+	}
+	
+	public static String getUnitName(Class<? extends DimensionValue> unit)
+	{
+		DimensionValue dv;
+		try
+		{
+			dv = instantiate(Whole.ZERO, unit);
+			return dv.getUnitName();
+		}
+		catch (NoSuchUnitException e)
+		{
+			return null;
 		}
 	}
 	

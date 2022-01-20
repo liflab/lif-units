@@ -53,9 +53,9 @@ public class RPM extends AngularVelocity
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " RPM";
+		return "RPM";
 	}
 
 	@Override

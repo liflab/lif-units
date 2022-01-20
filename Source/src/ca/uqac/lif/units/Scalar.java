@@ -56,5 +56,11 @@ public class Scalar extends DimensionValue
 	{
 		return m_value.toString();
 	}
+	
+	@Override
+	public String getUnitName()
+	{
+		return "";
+	}
 
 }

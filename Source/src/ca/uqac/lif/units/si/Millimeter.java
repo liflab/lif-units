@@ -50,11 +50,10 @@ public class Millimeter extends Length
 	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " mm";
+		return "mm";
 	}
-	
 	@Override
 	protected Real fromBaseUnit(Real x) 
 	{

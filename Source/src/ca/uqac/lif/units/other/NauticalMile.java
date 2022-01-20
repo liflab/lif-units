@@ -48,9 +48,9 @@ public class NauticalMile extends Length
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " NM";
+		return "NM";
 	}
 	
 	@Override

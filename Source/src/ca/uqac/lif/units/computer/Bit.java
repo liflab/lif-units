@@ -29,9 +29,9 @@ public class Bit extends Memory
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " MB";
+		return "b";
 	}
 	
 	@Override

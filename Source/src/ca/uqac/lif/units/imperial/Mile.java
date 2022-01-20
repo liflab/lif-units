@@ -48,9 +48,9 @@ public class Mile extends Length
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " mi";
+		return "mi";
 	}
 	
 	@Override

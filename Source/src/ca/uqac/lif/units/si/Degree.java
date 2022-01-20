@@ -44,9 +44,9 @@ public class Degree extends Angle
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " cm";
+		return "°";
 	}
 	
 	@Override

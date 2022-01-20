@@ -39,9 +39,9 @@ public class Second extends Time
 	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " s";
+		return "s";
 	}
 	
 	@Override

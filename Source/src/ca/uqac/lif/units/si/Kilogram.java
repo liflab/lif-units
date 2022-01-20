@@ -34,9 +34,9 @@ public class Kilogram extends Mass
 	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " kg";
+		return "kg";
 	}
 	
 	@Override

@@ -146,7 +146,7 @@ public class FloatingPoint implements Real
 			return NumberFormatter.display(m_value);
 		}
 		StringBuilder out = new StringBuilder();
-		out.append("(").append(NumberFormatter.display(m_value)).append(" \u00b1 ").append(NumberFormatter.display(m_uncertainty)).append(")");
+		out.append(NumberFormatter.display(m_value)).append(" \u00b1 ").append(NumberFormatter.display(m_uncertainty));
 		return out.toString();
 	}
 	

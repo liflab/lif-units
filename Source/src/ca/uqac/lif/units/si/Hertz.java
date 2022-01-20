@@ -34,9 +34,9 @@ public class Hertz extends Frequency
 	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " Hz";
+		return "Hz";
 	}
 	
 	@Override

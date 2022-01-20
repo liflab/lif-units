@@ -55,9 +55,9 @@ public class KilometersPerHour extends Velocity
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " km/h";
+		return "km/h";
 	}
 
 	@Override

@@ -54,9 +54,9 @@ public class MilesPerHour extends Velocity
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " MPH";
+		return "MPH";
 	}
 	
 	@Override

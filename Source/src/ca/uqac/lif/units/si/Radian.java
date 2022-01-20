@@ -39,9 +39,9 @@ public class Radian extends Angle
 	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " rad";
+		return "rad";
 	}
 	
 	@Override

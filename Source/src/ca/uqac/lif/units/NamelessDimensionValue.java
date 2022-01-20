@@ -63,4 +63,10 @@ public class NamelessDimensionValue extends DimensionValue
 	{
 		return this;
 	}
+
+	@Override
+	public String getUnitName()
+	{
+		return m_dimension.toString();
+	}
 }

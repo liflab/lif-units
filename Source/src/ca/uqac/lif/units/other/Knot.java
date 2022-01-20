@@ -54,9 +54,9 @@ public class Knot extends Velocity
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " kt";
+		return "kt";
 	}
 	
 	@Override

@@ -43,11 +43,16 @@ public class Centimeter extends Length
 	{
 		super(x);
 	}
+	
+	public Centimeter(Real x) 
+	{
+		super(x);
+	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " cm";
+		return "cm";
 	}
 	
 	@Override

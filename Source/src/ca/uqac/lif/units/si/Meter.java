@@ -39,9 +39,9 @@ public class Meter extends Length
 	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " m";
+		return "m";
 	}
 	
 	@Override

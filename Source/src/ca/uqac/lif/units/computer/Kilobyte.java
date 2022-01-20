@@ -30,9 +30,9 @@ public class Kilobyte extends Memory
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " kB";
+		return "kB";
 	}
 	
 	@Override

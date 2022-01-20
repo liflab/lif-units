@@ -30,9 +30,9 @@ public class Megabyte extends Byte
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " MB";
+		return "MB";
 	}
 	
 	@Override

@@ -39,9 +39,9 @@ public class RadiansPerSecond extends AngularVelocity
 	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " rad/s";
+		return "rad/s";
 	}
 	
 	@Override

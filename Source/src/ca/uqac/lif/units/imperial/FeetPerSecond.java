@@ -54,9 +54,9 @@ public class FeetPerSecond extends Velocity
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " ft/s";
+		return "ft/s";
 	}
 	
 	@Override

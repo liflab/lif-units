@@ -16,9 +16,9 @@ public class Byte extends Memory
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " B";
+		return "B";
 	}
 	
 	@Override

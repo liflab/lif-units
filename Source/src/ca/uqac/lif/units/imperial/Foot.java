@@ -48,9 +48,9 @@ public class Foot extends Length
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " ft";
+		return "ft";
 	}
 	
 	@Override

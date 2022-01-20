@@ -45,9 +45,9 @@ public class Hour extends Time
 	}
 
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " h";
+		return "h";
 	}
 	
 	@Override
