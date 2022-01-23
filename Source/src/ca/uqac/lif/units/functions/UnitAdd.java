@@ -20,13 +20,21 @@ package ca.uqac.lif.units.functions;
 import ca.uqac.lif.dag.NodeConnector;
 import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.numbers.Whole;
+import ca.uqac.lif.petitpoucet.NodeFactory;
+import ca.uqac.lif.petitpoucet.Part;
+import ca.uqac.lif.petitpoucet.PartNode;
 import ca.uqac.lif.petitpoucet.function.Circuit;
+import ca.uqac.lif.petitpoucet.function.Fork;
 import ca.uqac.lif.petitpoucet.function.Function;
 import ca.uqac.lif.petitpoucet.function.FunctionException;
 import ca.uqac.lif.petitpoucet.function.InvalidArgumentTypeException;
+import ca.uqac.lif.petitpoucet.function.NthOutput;
 import ca.uqac.lif.petitpoucet.function.number.Addition;
+import ca.uqac.lif.spreadsheet.Cell;
+import ca.uqac.lif.spreadsheet.functions.ValueOf;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
+import ca.uqac.lif.units.DimensionValuePart.UnitName;
 import ca.uqac.lif.units.NoSuchUnitException;
 
 /**
@@ -36,22 +44,37 @@ import ca.uqac.lif.units.NoSuchUnitException;
  */
 public class UnitAdd extends Addition
 {
-	public static Function get(Function ... arguments)
+	public static Function add(Object ... arguments)
 	{
 		if (arguments.length == 1)
 		{
-			return arguments[0];
+			return asFunction(arguments[0]);
 		}
-		Circuit c = new Circuit(arguments.length, 1);
+		Circuit c = new Circuit(1, 1);
+		Fork fork = new Fork(arguments.length);
+		c.associateInput(0, fork.getInputPin(0));
 		UnitAdd f = new UnitAdd(arguments.length);
 		for (int i = 0; i < arguments.length; i++)
 		{
-			Function in_f = arguments[i];
-			c.associateInput(0, f.getInputPin(0));
+			Function in_f = asFunction(arguments[i]);
+			NodeConnector.connect(fork, i, in_f, 0);
 			NodeConnector.connect(in_f, 0, f, i);
 		}
 		c.associateOutput(0, f.getOutputPin(0));
 		return c;
+	}
+	
+	protected static Function asFunction(Object o)
+	{
+		if (o instanceof Cell)
+		{
+			return new ValueOf((Cell) o);
+		}
+		if (o instanceof Function)
+		{
+			return (Function) o;
+		}
+		return null;
 	}
 	
 	/**
@@ -120,5 +143,19 @@ public class UnitAdd extends Addition
 		UnitAdd ua = new UnitAdd(getInputArity());
 		copyInto(ua, with_state);
 		return ua;
+	}
+	
+	@Override
+	public PartNode getExplanation(Part d, NodeFactory f)
+	{
+		Part d_tail = d.tail();
+		if (d_tail == null || !(d_tail.head() instanceof UnitName))
+		{
+			return super.getExplanation(d, f);
+		}
+		// The unit depends only on the first operand
+		PartNode root = f.getPartNode(d, f);
+		root.addChild(f.getPartNode(NthOutput.replaceOutByIn(d, 0), this));
+		return root;
 	}
 }
