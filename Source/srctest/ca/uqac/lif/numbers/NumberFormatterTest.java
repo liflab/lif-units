@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 Sylvain Hallé
+  Copyright 2021-2022 Sylvain Hallé
   Laboratoire d'informatique formelle
   Université du Québec à Chicoutimi, Canada
 
@@ -91,6 +91,12 @@ public class NumberFormatterTest
 	public void testGetPrecision3()
 	{
 		assertEquals(-2, getPrecision(20.54));
+	}
+	
+	@Test
+	public void testGetPrecision4()
+	{
+		assertEquals(-3, getPrecision(0.007));
 	}
 	
 	@Test

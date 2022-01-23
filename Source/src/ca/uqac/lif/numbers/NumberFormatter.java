@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 Sylvain Hallé
+  Copyright 2021-2022 Sylvain Hallé
   Laboratoire d'informatique formelle
   Université du Québec à Chicoutimi, Canada
 
@@ -118,22 +118,30 @@ public class NumberFormatter
 	 */
 	public static int getPrecision(double x)
 	{
-		int pow = 0;
-		if ((int) x == x)
+		x = Math.abs(x);
+		double fractional_part = x % 1;
+		if (fractional_part == 0)
 		{
-			while (((int) x) == x)
+			for (double div = 1; div < Double.MAX_VALUE; div *= 10)
 			{
-				x /= 10;
-				pow++;
+				if ((x / div) % 10 != 0)
+				{
+					return (int) Math.floor(Math.log10(div));
+				}
 			}
-			return pow - 1;
+			throw new ArithmeticException("Overflow");
 		}
-		while (((int) x) != x)
+		else
 		{
-			x *= 10;
-			pow--;
+			for (double div = 1; div < Double.MAX_VALUE; div *= 10)
+			{
+				if ((x * div) % 1 == 0)
+				{
+					return (int) -Math.floor(Math.log10(div));
+				}
+			}
+			throw new ArithmeticException("Underflow");
 		}
-		return pow;
 	}
 
 	/**
