@@ -15,76 +15,75 @@
   See the License for the specific language governing permissions and
   limitations under the License.
  */
-package ca.uqac.lif.units;
+package ca.uqac.lif.numbers;
 
 import ca.uqac.lif.petitpoucet.Part;
 
 /**
- * Common ancestor to all {@link Part}s of a {@link DimensionValue} object.
+ * Common ancestor to parts of a {@link Real} number.
  * @author Sylvain Hallé
- *
  */
-public abstract class DimensionValuePart implements Part
+public abstract class RealPart implements Part
 {
 	/**
-	 * Public instance of the {@link UnitName} part.
+	 * Public instance of the {@link RealValue} part.
 	 */
-	public static final UnitName unitName = new UnitName();
+	public static final RealValue realValue = new RealValue();
 	
 	/**
-	 * Public instance of the {@link ScalarPart} part.
+	 * Public instance of the {@link Uncertainty} part.
 	 */
-	public static final ScalarPart scalar = new ScalarPart();
+	public static final Uncertainty uncertainty = new Uncertainty();
 	
 	@Override
-	public boolean appliesTo(Object o)
-	{
-		return o instanceof DimensionValue;
-	}
-	
-	@Override
-	public DimensionValuePart head()
+	public RealPart head()
 	{
 		return this;
 	}
-	
+
 	@Override
 	public Part tail()
 	{
 		return null;
 	}
-	
-	/**
-	 * Part designating the name of the unit of a dimension value.
-	 */
-	public static class UnitName extends DimensionValuePart
+
+	@Override
+	public boolean appliesTo(Object o)
 	{
-		protected UnitName()
+		return o instanceof Real;
+	}
+
+	/**
+	 * Part designating the real value of a number.
+	 */
+	public static class RealValue extends RealPart
+	{
+		protected RealValue()
 		{
 			super();
 		}
-		
+
 		@Override
 		public String toString()
 		{
-			return "Unit";
+			return "Real value";
 		}
 	}
-	
+
 	/**
-	 * Part designating the scalar of a dimension value.
+	 * Part designating the real value of a number.
 	 */
-	public static class ScalarPart extends DimensionValuePart
+	public static class Uncertainty extends RealPart
 	{
-		protected ScalarPart()
+		protected Uncertainty()
 		{
 			super();
 		}
-		
+
 		@Override
 		public String toString()
 		{
-			return "Scalar";
+			return "Uncertainty";
 		}
 	}
 }

@@ -17,14 +17,26 @@
  */
 package ca.uqac.lif.units.functions;
 
+import ca.uqac.lif.dag.LabelledNode;
 import ca.uqac.lif.numbers.Real;
+import ca.uqac.lif.numbers.RealPart.Uncertainty;
 import ca.uqac.lif.numbers.Whole;
+import ca.uqac.lif.petitpoucet.AndNode;
+import ca.uqac.lif.petitpoucet.NodeFactory;
+import ca.uqac.lif.petitpoucet.Part;
+import ca.uqac.lif.petitpoucet.PartNode;
 import ca.uqac.lif.petitpoucet.function.InvalidArgumentTypeException;
+import ca.uqac.lif.petitpoucet.function.NthOutput;
 import ca.uqac.lif.petitpoucet.function.number.Multiplication;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
 import ca.uqac.lif.units.NamelessDimensionValue;
 
+/**
+ * Function that multiples a set of {@link DimensionValue}s.
+ * @author Sylvain Hallé
+ *
+ */
 public class UnitMultiply extends Multiplication
 {
 	public UnitMultiply(int in_arity)
@@ -73,5 +85,41 @@ public class UnitMultiply extends Multiplication
 		UnitMultiply um = new UnitMultiply(getInputArity());
 		copyInto(um, with_state);
 		return um;
+	}
+	
+	@Override
+	public PartNode getExplanation(Part d, NodeFactory f)
+	{
+		PartNode root = f.getPartNode(d, this);
+		int input = NthOutput.mentionedOutput(d);
+		if (input < 0 || input > getInputArity())
+		{
+			root.addChild(f.getUnknownNode());
+			return root;
+		}
+		Part tail = d.tail();
+		if (tail == null)
+		{
+			return super.getExplanation(d, f);
+		}
+		Part t_head = tail.head();
+		if (!(t_head instanceof Uncertainty))
+		{
+			return super.getExplanation(d, f);
+		}
+		// Uncertainty always depends on all inputs
+		LabelledNode to_add = root;
+		if (getInputArity() > 1)
+		{
+			AndNode and = f.getAndNode();
+			to_add.addChild(and);
+			to_add = and;
+		}
+		for (int i = 0; i < getInputArity(); i++)
+		{
+			Part new_p = NthOutput.replaceOutByIn(d, i);
+			to_add.addChild(f.getPartNode(new_p, this));
+		}
+		return root;
 	}
 }

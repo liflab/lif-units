@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 Sylvain Hallé
+  Copyright 2021-2022 Sylvain Hallé
   Laboratoire d'informatique formelle
   Université du Québec à Chicoutimi, Canada
 
@@ -21,6 +21,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ca.uqac.lif.numbers.FloatingPoint;
+import ca.uqac.lif.numbers.RealPart;
+import ca.uqac.lif.petitpoucet.AndNode;
+import ca.uqac.lif.petitpoucet.ComposedPart;
+import ca.uqac.lif.petitpoucet.PartNode;
+import ca.uqac.lif.petitpoucet.function.NthInput;
+import ca.uqac.lif.petitpoucet.function.NthOutput;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
 import ca.uqac.lif.units.NamelessDimensionValue;
@@ -46,7 +53,7 @@ public class UnitMultiplyTest
 		assertEquals(2, out.get().doubleValue(), 0.0001);
 		assertEquals(out.getDimension(), SurfaceValue.DIMENSION);
 	}
-	
+
 	@Test
 	public void testSame2()
 	{
@@ -59,7 +66,7 @@ public class UnitMultiplyTest
 		assertEquals(0.02, out.get().doubleValue(), 0.0001);
 		assertEquals(out.getDimension(), SurfaceValue.DIMENSION);
 	}
-	
+
 	@Test
 	public void testSame3()
 	{
@@ -72,7 +79,7 @@ public class UnitMultiplyTest
 		assertEquals(0.0254, out.get().doubleValue(), 0.0001);
 		assertEquals(out.getDimension(), SurfaceValue.DIMENSION);
 	}
-	
+
 	@Test
 	public void testOther1()
 	{
@@ -86,5 +93,39 @@ public class UnitMultiplyTest
 		assertEquals(out.getDimension(), Velocity.DIMENSION);
 		MilesPerHour mph = new MilesPerHour(out);
 		assertEquals(2.2369, mph.get().doubleValue(), 0.0001);
+	}
+
+	@Test
+	public void testExplain1()
+	{
+		Centimeter len1 = new Centimeter(FloatingPoint.get(0, 1));
+		Centimeter len2 = new Centimeter(FloatingPoint.get(2, 1));
+		UnitMultiply f = new UnitMultiply(2);
+		f.evaluate(len1, len2);
+		PartNode root = f.getExplanation(ComposedPart.compose(RealPart.uncertainty, NthOutput.FIRST));
+		assertEquals(1, root.getOutputLinks(0).size());
+		AndNode and = (AndNode) root.getOutputLinks(0).get(0).getNode();
+		assertEquals(2, and.getOutputLinks(0).size());
+		{
+			PartNode child = (PartNode) and.getOutputLinks(0).get(0).getNode();
+			assertEquals(ComposedPart.compose(RealPart.uncertainty, NthInput.FIRST), child.getPart());
+		}
+		{
+			PartNode child = (PartNode) and.getOutputLinks(0).get(1).getNode();
+			assertEquals(ComposedPart.compose(RealPart.uncertainty, NthInput.SECOND), child.getPart());
+		}
+	}
+
+	@Test
+	public void testExplain2()
+	{
+		Centimeter len1 = new Centimeter(FloatingPoint.get(1, 1));
+		Centimeter len2 = new Centimeter(FloatingPoint.get(0, 1));
+		UnitMultiply f = new UnitMultiply(2);
+		f.evaluate(len1, len2);
+		PartNode root = f.getExplanation(ComposedPart.compose(RealPart.realValue, NthOutput.FIRST));
+		assertEquals(1, root.getOutputLinks(0).size());
+		PartNode child = (PartNode) root.getOutputLinks(0).get(0).getNode();
+		assertEquals(ComposedPart.compose(RealPart.realValue, NthInput.SECOND), child.getPart());
 	}
 }

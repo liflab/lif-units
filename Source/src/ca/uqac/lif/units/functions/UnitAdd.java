@@ -17,8 +17,11 @@
  */
 package ca.uqac.lif.units.functions;
 
+import ca.uqac.lif.dag.NodeConnector;
 import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.numbers.Whole;
+import ca.uqac.lif.petitpoucet.function.Circuit;
+import ca.uqac.lif.petitpoucet.function.Function;
 import ca.uqac.lif.petitpoucet.function.FunctionException;
 import ca.uqac.lif.petitpoucet.function.InvalidArgumentTypeException;
 import ca.uqac.lif.petitpoucet.function.number.Addition;
@@ -27,11 +30,30 @@ import ca.uqac.lif.units.DimensionValue;
 import ca.uqac.lif.units.NoSuchUnitException;
 
 /**
- * Adds dimension values.
+ * Function that adds a set of {@link DimensionValue}s.
  * @author Sylvain Hallé
+ *
  */
 public class UnitAdd extends Addition
 {
+	public static Function get(Function ... arguments)
+	{
+		if (arguments.length == 1)
+		{
+			return arguments[0];
+		}
+		Circuit c = new Circuit(arguments.length, 1);
+		UnitAdd f = new UnitAdd(arguments.length);
+		for (int i = 0; i < arguments.length; i++)
+		{
+			Function in_f = arguments[i];
+			c.associateInput(0, f.getInputPin(0));
+			NodeConnector.connect(in_f, 0, f, i);
+		}
+		c.associateOutput(0, f.getOutputPin(0));
+		return c;
+	}
+	
 	/**
 	 * Creates a new instance of the function.
 	 * @param in_arity The input arity of the function
