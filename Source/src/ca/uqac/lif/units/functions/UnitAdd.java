@@ -22,6 +22,9 @@ import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.petitpoucet.NodeFactory;
 import ca.uqac.lif.petitpoucet.Part;
 import ca.uqac.lif.petitpoucet.PartNode;
+import ca.uqac.lif.petitpoucet.function.Circuit;
+import ca.uqac.lif.petitpoucet.function.Fork;
+import ca.uqac.lif.petitpoucet.function.Function;
 import ca.uqac.lif.petitpoucet.function.FunctionException;
 import ca.uqac.lif.petitpoucet.function.InvalidArgumentTypeException;
 import ca.uqac.lif.petitpoucet.function.NthOutput;
@@ -37,7 +40,36 @@ import ca.uqac.lif.units.NoSuchUnitException;
  *
  */
 public class UnitAdd extends Addition
-{	
+{
+	public static Function add(Object ... arguments)
+	{
+		if (arguments.length == 1)
+		{
+			return asFunction(arguments[0]);
+		}
+		Circuit c = new Circuit(1, 1, "UnitAdd");
+		Fork fork = new Fork(arguments.length);
+		c.associateInput(0, fork.getInputPin(0));
+		UnitAdd f = new UnitAdd(arguments.length);
+		for (int i = 0; i < arguments.length; i++)
+		{
+			Function in_f = asFunction(arguments[i]);
+			NodeConnector.connect(fork, i, in_f, 0);
+			NodeConnector.connect(in_f, 0, f, i);
+		}
+		c.associateOutput(0, f.getOutputPin(0));
+		return c;
+	}
+	
+	protected static Function asFunction(Object o)
+	{
+		if (o instanceof Function)
+		{
+			return (Function) o;
+		}
+		return null;
+	}
+	
 	/**
 	 * Creates a new instance of the function.
 	 * @param in_arity The input arity of the function
@@ -97,7 +129,7 @@ public class UnitAdd extends Addition
 		}
 		return out;
 	}
-
+	
 	@Override
 	public UnitAdd duplicate(boolean with_state)
 	{
@@ -115,7 +147,7 @@ public class UnitAdd extends Addition
 			return super.getExplanation(d, f);
 		}
 		// The unit depends only on the first operand
-		PartNode root = f.getPartNode(d, f);
+		PartNode root = f.getPartNode(d, this);
 		root.addChild(f.getPartNode(NthOutput.replaceOutByIn(d, 0), this));
 		return root;
 	}
