@@ -17,6 +17,7 @@
  */
 package ca.uqac.lif.units.functions;
 
+import ca.uqac.lif.dag.NodeConnector;
 import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.petitpoucet.NodeFactory;

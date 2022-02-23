@@ -67,4 +67,12 @@ public class ConvertTo extends AtomicFunction
 	{
 		return DimensionValue.getUnitName(m_unit);
 	}
+	
+	@Override
+	public ConvertTo duplicate(boolean with_state)
+	{
+		ConvertTo ct = new ConvertTo(m_unit);
+		super.copyInto(ct, with_state);
+		return ct;
+	}
 }
