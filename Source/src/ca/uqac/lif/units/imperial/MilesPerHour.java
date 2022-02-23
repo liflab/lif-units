@@ -47,6 +47,11 @@ public class MilesPerHour extends Velocity
 		super(x);
 	}
 	
+	protected MilesPerHour()
+	{
+		super();
+	}
+	
 	@Override
 	protected Real fromBaseUnit(Real x) 
 	{

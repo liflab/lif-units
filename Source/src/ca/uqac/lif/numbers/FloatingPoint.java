@@ -42,6 +42,14 @@ public class FloatingPoint implements Real
 	protected final double m_uncertainty;
 	
 	/**
+	 * No-args constructor. Used only for deserialization.
+	 */
+	protected FloatingPoint()
+	{
+		this(0);
+	}
+	
+	/**
 	 * Creates a new floating point number and specifies its uncertainty.
 	 * @param value The value of the floating point number
 	 * @param uncertainty The uncertainty associated to this number

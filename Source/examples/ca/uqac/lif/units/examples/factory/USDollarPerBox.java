@@ -37,6 +37,12 @@ public class USDollarPerBox extends DimensionValue
 	{
 		return "$" + m_value + "/box";
 	}
+	
+	@Override
+	public String getUnitName()
+	{
+		return "$/box";
+	}
 
 	@Override
 	public DimensionValue asBaseUnit() 

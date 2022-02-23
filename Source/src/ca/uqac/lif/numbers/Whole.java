@@ -56,6 +56,14 @@ public class Whole implements Real
 	protected final double m_uncertainty;
 	
 	/**
+	 * No-args constructor. Used only for deserialization.
+	 */
+	protected Whole()
+	{
+		this(0);
+	}
+	
+	/**
 	 * Creates a whole number out of a integer value.
 	 * @param value The integer value of the number
 	 * @return The whole number instance

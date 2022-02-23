@@ -37,6 +37,11 @@ public class Second extends Time
 	{
 		super(x);
 	}
+	
+	protected Second()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()

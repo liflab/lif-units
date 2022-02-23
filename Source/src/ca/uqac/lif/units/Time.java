@@ -28,7 +28,7 @@ public abstract class Time extends DimensionValue
 	/**
 	 * The dimension of the time value (i.e. <i>time</i><sup>1</sup>).
 	 */
-	/*@ non_null @*/ public static final Dimension DIMENSION = new Dimension().add(Quantity.TIME, 1);
+	/*@ non_null @*/ public static final transient Dimension DIMENSION = new Dimension().add(Quantity.TIME, 1);
 	
 	public Time(double x)
 	{
@@ -43,6 +43,11 @@ public abstract class Time extends DimensionValue
 	public Time(/*@ non_null @*/ Real x)
 	{
 		super(x);
+	}
+	
+	protected Time()
+	{
+		super();
 	}
 	
 	@Override

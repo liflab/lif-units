@@ -52,6 +52,11 @@ public class Inch extends Length
 		super(x);
 	}
 	
+	protected Inch()
+	{
+		super();
+	}
+	
 	@Override
 	public String getUnitName()
 	{

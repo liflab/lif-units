@@ -48,6 +48,11 @@ public class KilometersPerHour extends Velocity
 		super(x);
 	}
 	
+	protected KilometersPerHour()
+	{
+		super();
+	}
+	
 	@Override
 	protected Real fromBaseUnit(Real x)
 	{

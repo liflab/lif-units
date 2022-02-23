@@ -22,7 +22,7 @@ public abstract class SurfaceValue extends DimensionValue
 	/**
 	 * The dimension of the surface value (i.e. <i>length</i><sup>2</sup>).
 	 */
-	/*@ non_null @*/ public static final Dimension DIMENSION = new Dimension().add(Quantity.LENGTH, 2);
+	/*@ non_null @*/ public static final transient Dimension DIMENSION = new Dimension().add(Quantity.LENGTH, 2);
 	
 	public SurfaceValue(double x)
 	{
@@ -32,6 +32,11 @@ public abstract class SurfaceValue extends DimensionValue
 	public SurfaceValue(/*@ non_null @*/ DimensionValue x)
 	{
 		super(x);
+	}
+	
+	protected SurfaceValue()
+	{
+		super();
 	}
 	
 	@Override

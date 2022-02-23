@@ -47,6 +47,11 @@ public class Mile extends Length
 		super(d);
 	}
 	
+	protected Mile()
+	{
+		super();
+	}
+	
 	@Override
 	public String getUnitName()
 	{

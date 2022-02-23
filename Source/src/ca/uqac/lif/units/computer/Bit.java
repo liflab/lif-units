@@ -10,7 +10,7 @@ import ca.uqac.lif.units.DimensionValue;
  */
 public class Bit extends Memory
 {
-	protected static final Whole s_factor = Whole.get(8);
+	protected static final transient Whole s_factor = Whole.get(8);
 	
 	public Bit(DimensionValue x)
 	{
@@ -20,6 +20,11 @@ public class Bit extends Memory
 	public Bit(double x)
 	{
 		super(x);
+	}
+	
+	protected Bit()
+	{
+		super();
 	}
 	
 	@Override

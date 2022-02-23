@@ -48,6 +48,11 @@ public class Millimeter extends Length
 	{
 		super(x);
 	}
+	
+	protected Millimeter()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()

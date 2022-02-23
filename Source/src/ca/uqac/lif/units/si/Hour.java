@@ -43,6 +43,11 @@ public class Hour extends Time
 	{
 		super(x);
 	}
+	
+	protected Hour()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()

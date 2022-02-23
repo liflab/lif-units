@@ -23,6 +23,11 @@ public class Megabyte extends Byte
 		super(x);
 	}
 	
+	protected Megabyte()
+	{
+		super();
+	}
+	
 	@Override
 	protected Real fromBaseUnit(Real x)
 	{

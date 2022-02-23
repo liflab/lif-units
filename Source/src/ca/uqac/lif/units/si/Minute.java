@@ -43,6 +43,11 @@ public class Minute extends Time
 	{
 		super(x);
 	}
+	
+	protected Minute()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()

@@ -6,9 +6,9 @@ import ca.uqac.lif.units.DimensionValue;
 
 public abstract class Memory extends DimensionValue
 {
-	public static final String NAME = "memory";
+	public static final transient String NAME = "memory";
 	
-	protected static final Dimension DIMENSION = new Dimension().add(NAME, 1);
+	protected static final transient Dimension DIMENSION = new Dimension().add(NAME, 1);
 	
 	public Memory(DimensionValue x)
 	{
@@ -23,6 +23,11 @@ public abstract class Memory extends DimensionValue
 	public Memory(Real x)
 	{
 		super(x);
+	}
+	
+	protected Memory()
+	{
+		super();
 	}
 
 	@Override

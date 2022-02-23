@@ -45,6 +45,11 @@ public class NamelessDimensionValue extends DimensionValue
 		super(x);
 		m_dimension = x.getDimension();
 	}
+	
+	protected NamelessDimensionValue()
+	{
+		super();
+	}
 
 	@Override
 	protected Real fromBaseUnit(Real x) 

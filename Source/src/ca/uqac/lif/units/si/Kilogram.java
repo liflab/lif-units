@@ -32,6 +32,11 @@ public class Kilogram extends Mass
 	{
 		super(x);
 	}
+	
+	protected Kilogram()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()

@@ -32,17 +32,17 @@ public class BoxesPerHour extends DimensionValue
 	{
 		return new Dimension().add(Lightbulb.DIMENSION, 1).add(Quantity.TIME, -1);
 	}
-	
-	@Override
-	public String toString()
-	{
-		return m_value + "boxes/h";
-	}
 
 	@Override
 	public DimensionValue asBaseUnit()
 	{
 		return new NamelessDimensionValue(m_value.multiply(s_factor), getDimension());
+	}
+
+	@Override
+	public String getUnitName() 
+	{
+		return "boxes/h";
 	}
 	
 	

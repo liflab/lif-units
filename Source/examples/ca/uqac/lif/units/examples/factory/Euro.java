@@ -37,9 +37,9 @@ public class Euro extends DimensionValue
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " €";
+		return "€";
 	}
 
 	@Override

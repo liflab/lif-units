@@ -24,7 +24,7 @@ public abstract class Angle extends DimensionValue
 	/**
 	 * The dimension of the angle value (i.e. <i>algne</i><sup>1</sup>).
 	 */
-	/*@ non_null @*/ public static final Dimension DIMENSION = new Dimension().add(Quantity.ANGLE, 1);
+	/*@ non_null @*/ public static final transient Dimension DIMENSION = new Dimension().add(Quantity.ANGLE, 1);
 	
 	public Angle(double x)
 	{
@@ -39,6 +39,14 @@ public abstract class Angle extends DimensionValue
 	public Angle(/*@ non_null @*/ Real x)
 	{
 		super(x);
+	}
+	
+	/**
+	 * No-args constructor. Used only for deserialization.
+	 */
+	protected Angle()
+	{
+		super();
 	}
 	
 	@Override

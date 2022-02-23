@@ -34,6 +34,11 @@ public abstract class Frequency extends DimensionValue
 		super(x);
 	}
 	
+	protected Frequency()
+	{
+		super();
+	}
+	
 	@Override
 	public Dimension getDimension()
 	{

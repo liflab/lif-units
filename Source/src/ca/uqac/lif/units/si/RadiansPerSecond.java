@@ -37,6 +37,11 @@ public class RadiansPerSecond extends AngularVelocity
 	{
 		super(x);
 	}
+	
+	protected RadiansPerSecond()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()

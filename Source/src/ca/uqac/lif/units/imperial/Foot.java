@@ -47,6 +47,11 @@ public class Foot extends Length
 		super(d);
 	}
 	
+	protected Foot()
+	{
+		super();
+	}
+	
 	@Override
 	public String getUnitName()
 	{

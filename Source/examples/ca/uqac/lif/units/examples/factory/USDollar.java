@@ -34,6 +34,12 @@ public class USDollar extends DimensionValue
 	{
 		return "$" + m_value;
 	}
+	
+	@Override
+	public String getUnitName()
+	{
+		return "$";
+	}
 
 	@Override
 	public USDollar asBaseUnit()

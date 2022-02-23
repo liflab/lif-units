@@ -48,6 +48,11 @@ public class Centimeter extends Length
 	{
 		super(x);
 	}
+	
+	protected Centimeter()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()

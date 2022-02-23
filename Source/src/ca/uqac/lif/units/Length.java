@@ -41,6 +41,11 @@ public abstract class Length extends DimensionValue
 		super(x);
 	}
 	
+	public Length()
+	{
+		super();
+	}
+	
 	@Override
 	/*@ non_null @*/ public Dimension getDimension()
 	{

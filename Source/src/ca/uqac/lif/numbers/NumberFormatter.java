@@ -27,12 +27,12 @@ public class NumberFormatter
 	/**
 	 * The UTF-8 "plus or minus" symbol.
 	 */
-	public static final String U_PM = "\u00b1";
+	public static final transient String U_PM = "\u00b1";
 
 	/**
 	 * The UTF-8 "times" symbol.
 	 */
-	public static final String U_TIMES = "\u00d7";
+	public static final transient String U_TIMES = "\u00d7";
 
 	/**
 	 * Private constructor, as this class is not meant to be instantiated.

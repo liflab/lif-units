@@ -32,9 +32,9 @@ public class LightbulbBox extends DimensionValue
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " box(es)";
+		return "box(es)";
 	}
 
 	@Override

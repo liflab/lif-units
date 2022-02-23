@@ -47,6 +47,11 @@ public class FeetPerSecond extends Velocity
 		super(x);
 	}
 	
+	protected FeetPerSecond()
+	{
+		super();
+	}
+	
 	@Override
 	protected Real fromBaseUnit(Real x) 
 	{

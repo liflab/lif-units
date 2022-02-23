@@ -37,6 +37,11 @@ public class Meter extends Length
 	{
 		super(x);
 	}
+	
+	protected Meter()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()

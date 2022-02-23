@@ -32,6 +32,11 @@ public class Hertz extends Frequency
 	{
 		super(x);
 	}
+	
+	protected Hertz()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()

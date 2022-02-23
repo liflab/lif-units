@@ -47,6 +47,11 @@ public class Knot extends Velocity
 		super(x);
 	}
 	
+	protected Knot()
+	{
+		super();
+	}
+	
 	@Override
 	protected Real fromBaseUnit(Real x) 
 	{

@@ -29,12 +29,12 @@ public abstract class DimensionValuePart implements Part
 	/**
 	 * Public instance of the {@link UnitName} part.
 	 */
-	public static final UnitName unitName = new UnitName();
+	public static final transient UnitName unitName = new UnitName();
 	
 	/**
 	 * Public instance of the {@link ScalarPart} part.
 	 */
-	public static final ScalarPart scalar = new ScalarPart();
+	public static final transient ScalarPart scalar = new ScalarPart();
 	
 	@Override
 	public boolean appliesTo(Object o)

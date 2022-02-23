@@ -23,6 +23,11 @@ public class Kilobyte extends Memory
 		super(x);
 	}
 	
+	protected Kilobyte()
+	{
+		super();
+	}
+	
 	@Override
 	protected Real fromBaseUnit(Real x)
 	{

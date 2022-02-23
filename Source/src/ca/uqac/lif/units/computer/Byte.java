@@ -15,6 +15,11 @@ public class Byte extends Memory
 		super(x);
 	}
 	
+	protected Byte()
+	{
+		super();
+	}
+	
 	@Override
 	public String getUnitName()
 	{

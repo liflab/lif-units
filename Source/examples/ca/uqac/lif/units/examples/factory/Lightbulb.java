@@ -30,9 +30,9 @@ public class Lightbulb extends DimensionValue
 	}
 	
 	@Override
-	public String toString()
+	public String getUnitName()
 	{
-		return m_value + " lightbulb(s)";
+		return "lightbulb(s)";
 	}
 
 	@Override

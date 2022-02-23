@@ -47,6 +47,11 @@ public class NauticalMile extends Length
 		super(d);
 	}
 	
+	protected NauticalMile()
+	{
+		super();
+	}
+	
 	@Override
 	public String getUnitName()
 	{

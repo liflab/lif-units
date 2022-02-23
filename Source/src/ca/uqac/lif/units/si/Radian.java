@@ -37,6 +37,11 @@ public class Radian extends Angle
 	{
 		super(x);
 	}
+	
+	protected Radian()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()

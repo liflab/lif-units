@@ -34,6 +34,11 @@ public abstract class Mass extends DimensionValue
 		super(x);
 	}
 	
+	protected Mass()
+	{
+		super();
+	}
+	
 	@Override
 	public Dimension getDimension()
 	{

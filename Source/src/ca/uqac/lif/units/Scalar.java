@@ -21,7 +21,7 @@ import ca.uqac.lif.numbers.Real;
 
 public class Scalar extends DimensionValue 
 {
-	public static final Dimension DIMENSION = new Dimension();
+	public static final transient Dimension DIMENSION = new Dimension();
 	
 	public Scalar(DimensionValue x) 
 	{
@@ -31,6 +31,11 @@ public class Scalar extends DimensionValue
 	public Scalar(double d) 
 	{
 		super(d);
+	}
+	
+	protected Scalar()
+	{
+		super();
 	}
 
 	@Override

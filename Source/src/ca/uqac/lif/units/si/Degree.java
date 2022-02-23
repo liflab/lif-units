@@ -43,6 +43,11 @@ public class Degree extends Angle
 		super(x);
 	}
 	
+	protected Degree()
+	{
+		super();
+	}
+	
 	@Override
 	public String getUnitName()
 	{

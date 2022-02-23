@@ -45,6 +45,11 @@ public abstract class Velocity extends DimensionValue
 		super(x);
 	}
 	
+	protected Velocity()
+	{
+		super();
+	}
+	
 	@Override
 	public Dimension getDimension()
 	{

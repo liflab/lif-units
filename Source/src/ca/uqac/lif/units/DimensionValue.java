@@ -34,7 +34,15 @@ public abstract class DimensionValue implements Comparable<DimensionValue>
 	/**
 	 * The value in "native" units.
 	 */
-	/*@ non_null @*/ protected final Real m_value;
+	/*@ non_null @*/ protected Real m_value;
+	
+	/**
+	 * No-args constructor. Used only for deserialization.
+	 */
+	protected DimensionValue()
+	{
+		this(0);
+	}
 	
 	/**
 	 * Creates a new dimension value from a scalar number.

@@ -46,6 +46,11 @@ public class RPM extends AngularVelocity
 		super(x);
 	}
 	
+	protected RPM()
+	{
+		super();
+	}
+	
 	@Override
 	protected Real fromBaseUnit(Real x)
 	{

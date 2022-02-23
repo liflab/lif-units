@@ -37,6 +37,11 @@ public class MetersPerSecond extends Velocity
 	{
 		super(x);
 	}
+	
+	protected MetersPerSecond()
+	{
+		super();
+	}
 
 	@Override
 	public String getUnitName()
