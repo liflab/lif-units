@@ -8,7 +8,7 @@ public abstract class Memory extends DimensionValue
 {
 	public static final transient String NAME = "memory";
 	
-	protected static final transient Dimension DIMENSION = new Dimension().add(NAME, 1);
+	public static final transient Dimension DIMENSION = new Dimension().add(NAME, 1);
 	
 	public Memory(DimensionValue x)
 	{
