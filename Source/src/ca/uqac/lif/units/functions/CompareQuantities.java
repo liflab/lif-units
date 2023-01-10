@@ -117,9 +117,9 @@ public abstract class CompareQuantities extends AtomicFunction
 		}
 		
 		@Override
-		public QuantityIsGreaterThan duplicate(boolean with_state)
+		public QuantityIsLessThan duplicate(boolean with_state)
 		{
-			return new QuantityIsGreaterThan();
+			return new QuantityIsLessThan();
 		}
 		
 		@Override
@@ -150,9 +150,9 @@ public abstract class CompareQuantities extends AtomicFunction
 		}
 		
 		@Override
-		public QuantityIsGreaterThan duplicate(boolean with_state)
+		public QuantityIsEqual duplicate(boolean with_state)
 		{
-			return new QuantityIsGreaterThan();
+			return new QuantityIsEqual();
 		}
 		
 		@Override
