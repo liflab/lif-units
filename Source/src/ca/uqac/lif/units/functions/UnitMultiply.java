@@ -1,5 +1,5 @@
 /*
-  Copyright 2021-2022 Sylvain Hallé
+  Copyright 2021-2023 Sylvain Hallé
   Laboratoire d'informatique formelle
   Université du Québec à Chicoutimi, Canada
 
@@ -22,11 +22,11 @@ import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.numbers.RealPart.Uncertainty;
 import ca.uqac.lif.numbers.Whole;
 import ca.uqac.lif.petitpoucet.AndNode;
-import ca.uqac.lif.petitpoucet.NodeFactory;
 import ca.uqac.lif.petitpoucet.Part;
 import ca.uqac.lif.petitpoucet.PartNode;
 import ca.uqac.lif.petitpoucet.function.InvalidArgumentTypeException;
 import ca.uqac.lif.petitpoucet.function.NthOutput;
+import ca.uqac.lif.petitpoucet.function.RelationNodeFactory;
 import ca.uqac.lif.petitpoucet.function.number.Multiplication;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
@@ -88,7 +88,7 @@ public class UnitMultiply extends Multiplication
 	}
 	
 	@Override
-	public PartNode getExplanation(Part d, NodeFactory f)
+	public PartNode getExplanation(Part d, RelationNodeFactory f)
 	{
 		PartNode root = f.getPartNode(d, this);
 		int input = NthOutput.mentionedOutput(d);

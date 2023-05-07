@@ -1,5 +1,5 @@
 /*
-  Copyright 2021-2022 Sylvain Hallé
+  Copyright 2021-2023 Sylvain Hallé
   Laboratoire d'informatique formelle
   Université du Québec à Chicoutimi, Canada
 
@@ -20,7 +20,6 @@ package ca.uqac.lif.units.functions;
 import ca.uqac.lif.dag.NodeConnector;
 import ca.uqac.lif.numbers.Real;
 import ca.uqac.lif.numbers.Whole;
-import ca.uqac.lif.petitpoucet.NodeFactory;
 import ca.uqac.lif.petitpoucet.Part;
 import ca.uqac.lif.petitpoucet.PartNode;
 import ca.uqac.lif.petitpoucet.function.Circuit;
@@ -29,6 +28,7 @@ import ca.uqac.lif.petitpoucet.function.Function;
 import ca.uqac.lif.petitpoucet.function.FunctionException;
 import ca.uqac.lif.petitpoucet.function.InvalidArgumentTypeException;
 import ca.uqac.lif.petitpoucet.function.NthOutput;
+import ca.uqac.lif.petitpoucet.function.RelationNodeFactory;
 import ca.uqac.lif.petitpoucet.function.number.Addition;
 import ca.uqac.lif.units.Dimension;
 import ca.uqac.lif.units.DimensionValue;
@@ -140,7 +140,7 @@ public class UnitAdd extends Addition
 	}
 
 	@Override
-	public PartNode getExplanation(Part d, NodeFactory f)
+	public PartNode getExplanation(Part d, RelationNodeFactory f)
 	{
 		Part d_tail = d.tail();
 		if (d_tail == null || !(d_tail.head() instanceof UnitName))
